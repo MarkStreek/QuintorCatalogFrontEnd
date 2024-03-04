@@ -67,7 +67,9 @@ The hardware tools are stored in a database. This information is served to the f
 
 Fill in...
 
+## Unit Tests
 
+>[![Run Tests](https://github.com/MarkStreek/QuintorCatalogFrontEnd/actions/workflows/runTests.yml/badge.svg)](https://github.com/MarkStreek/QuintorCatalogFrontEnd/actions/workflows/runTests.yml)
 
 
 
