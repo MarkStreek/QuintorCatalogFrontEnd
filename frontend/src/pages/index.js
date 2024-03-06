@@ -1,10 +1,9 @@
 import React from "react";
+import RootLayout from "../app/components/RootLayout";
 export default function Home() {
   return (
-    React.createElement("div", null,
-      React.createElement("h1", { className: "text-3xl font-bold underline" },
-        "Hello world!"
-      )
-    )
-  );
+    <RootLayout>
+      <h1>Hello World!</h1>
+    </RootLayout>
+      );
 } 
