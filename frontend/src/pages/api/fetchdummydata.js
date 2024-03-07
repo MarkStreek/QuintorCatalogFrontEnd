@@ -19,15 +19,14 @@ export default async function handler(req, res) {
                     'Content-Type': 'application/json',
                 },
             });
-
+            
+            // Log the recieved response from the server.
             console.log('Response from server', response);
 
-            // Ensure the response is successful before trying to parse it as JSON.
-            if (!response.ok) {
-                throw new Error(`Error from server: ${response.statusText}`);
-            }
-
+            // Extract the JSON data from the response
             const dummyData = await response.json();
+
+            // Log the extracted dummy data.
             console.log('Dummy data', dummyData);
 
             // Respond with a 200 OK status code and send the dummy data in JSON format.
