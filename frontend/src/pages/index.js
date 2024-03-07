@@ -1,6 +1,7 @@
 import React from "react";
 import RootLayout from "../app/components/RootLayout";
 import DummyDataTable from "../app/components/TableView";
+
 export default function Home() {
   return (
     <RootLayout>
