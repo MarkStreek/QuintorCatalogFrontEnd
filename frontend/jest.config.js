@@ -1,4 +1,5 @@
 module.exports = {
+  setupFilesAfterEnv: ['/Users/sibrenmac/Code/QuintorCatalogFrontEnd/frontend/jest.setup.js'],
   testEnvironment: 'jsdom',
   collectCoverage: true,
   coverageProvider: 'v8',
@@ -19,4 +20,8 @@ module.exports = {
     '@next/font/(.*)': '<rootDir>/__mocks__/nextFontMock.js',
     'next/font/(.*)': '<rootDir>/__mocks__/nextFontMock.js',
   },
+  transform: {
+    "^.+\\.[t|j]sx?$": "babel-jest"
+  },
+
 };
