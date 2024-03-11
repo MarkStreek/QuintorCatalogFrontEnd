@@ -32,13 +32,28 @@ describe('API Route /api/fetchdummydata', () => {
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({ key: 'value' });
   });
+
+  // Test case for handling a failed fetch request, different method ('POST').
+  it('returns 405 status code for non-GET requests', async () => {
+    req.method = 'POST';
+    await handler(req, res);
+    expect(res.status).toHaveBeenCalledWith(405);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Method not allowed' });
+  });
+
+  // Test case for handling a failed fetch request, network or server error.
+  it('returns 500 status code for failed fetch request', async () => {
+    global.fetch = jest.fn(() => Promise.reject('Failed to fetch'));
+    await handler(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Error fetching dummy data' });
+  });
 });
 
 // Additional test cases that need to be implemented
-//  - Test case for handling a failed fetch request, different method ('POST')
-//  - Test case for handling a failed fetch request, network or server error
+
 //  - Test case for handling an empty response from the server
-//  - Test case for handling an huge response from the server
+//  - Test case for handling an huge response from the server (Include test for pagination)
 //  - Test case for handling a response with invalid JSON
 //  - Test case for handling a slow network response
 

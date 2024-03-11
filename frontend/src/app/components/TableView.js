@@ -1,42 +1,43 @@
-// app/components/TableView.js
-// This component renders a table view of dummy data fetched from an API endpoint.
-
 import React, { useState, useEffect } from 'react';
-  
-/**
- * Renders a table component that displays dummy data fetched from an API.
- *
- * @component
- * @returns {JSX.Element} The rendered DummyDataTable component.
- */
+import Pagination from './Pagination';
+
 const DummyDataTable = () => {
-    // State variable to store the dummy data.
+    const [allData, setAllData] = useState([]);
     const [dummyData, setDummyData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 2;  // Set your desired number of items per page
 
-    // Fetch the dummy data from the API endpoint when the component mounts.
+    const fetchDummyData = async () => {
+        try {
+          const response = await fetch('/api/fetchdummydata');
+          if (response.ok) {
+            const data = await response.json();
+            setAllData(data || []); // Store all fetched data
+          } else {
+            console.error('Error fetching dummy data: ', response.statusText);
+            setAllData([]);
+          }
+        } catch (error) {
+          console.error('Error fetching dummy data: ', error);
+          setAllData([]);
+        }
+    };
+    
     useEffect(() => {
-        // Function to fetch dummy data from the api.
-        const fetchDummyData = async () => {
-            const response = await fetch('/api/fetchdummydata', {
-                method: 'GET',
-            });
-
-            // Check if the fetch request was successful.
-            if (response.ok) {
-                // Parse the JSON response and update the state with the fetched data.
-                const data = await response.json();
-                setDummyData(data);
-            } else {
-                // Log an error message if the fetch request fails.
-                console.error('Error fetching dummy data', response);
-            }
-        };
-
-        // Call the fetchDummyData function to fetch the dummy data.
         fetchDummyData();
-    }, []); // Empty useState array so this effect runs once on mount.
+    }, []); // Fetch data only once when the component mounts
 
-    // Render the table with the fetched dummy data.
+    useEffect(() => {
+        // Calculate the slice of data to display based on currentPage and itemsPerPage
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        setDummyData(allData.slice(start, end));
+    }, [currentPage, allData]); // Recalculate displayed data when currentPage or allData changes
+
+    const onPageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     return (
         <div>
             <h1>Dummy Data Table</h1>
@@ -49,7 +50,6 @@ const DummyDataTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* Map over the dummyData array to render each row. */}
                     {dummyData.map((dummy, index) => (
                         <tr key={index}>
                             <td>{dummy.id}</td>
@@ -59,6 +59,12 @@ const DummyDataTable = () => {
                     ))}
                 </tbody>
             </table>
+            <Pagination
+                total={allData.length}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+            />
         </div>
     );
 };
