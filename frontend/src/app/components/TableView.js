@@ -5,34 +5,37 @@ const DummyDataTable = () => {
     const [allData, setAllData] = useState([]);
     const [dummyData, setDummyData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 2;  // Set your desired number of items per page
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null); // State om fouten bij te houden
+    const itemsPerPage = 2;
 
     const fetchDummyData = async () => {
+        setIsLoading(true);
+        setError(null); // Reset error status bij elke nieuwe fetch
         try {
-          const response = await fetch('/api/fetchdummydata');
-          if (response.ok) {
-            const data = await response.json();
-            setAllData(data || []); // Store all fetched data
-          } else {
-            console.error('Error fetching dummy data: ', response.statusText);
-            setAllData([]);
-          }
+            const response = await fetch('/api/wrongendpoint');
+            if (response.ok) {
+                const data = await response.json();
+                setAllData(data || []);
+            } else {
+                throw new Error('Data could not be fetched.'); // Gooi een fout als response niet ok is
+            }
         } catch (error) {
-          console.error('Error fetching dummy data: ', error);
-          setAllData([]);
+            setError(error.message);
+            setAllData([]);
         }
+        setIsLoading(false);
     };
-    
-    useEffect(() => {
-        fetchDummyData();
-    }, []); // Fetch data only once when the component mounts
 
     useEffect(() => {
-        // Calculate the slice of data to display based on currentPage and itemsPerPage
+        fetchDummyData();
+    }, []);
+
+    useEffect(() => {
         const start = (currentPage - 1) * itemsPerPage;
         const end = start + itemsPerPage;
         setDummyData(allData.slice(start, end));
-    }, [currentPage, allData]); // Recalculate displayed data when currentPage or allData changes
+    }, [currentPage, allData]);
 
     const onPageChange = (page) => {
         setCurrentPage(page);
@@ -50,21 +53,29 @@ const DummyDataTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {dummyData.map((dummy, index) => (
-                        <tr key={index}>
-                            <td>{dummy.id}</td>
-                            <td>{dummy.name}</td>
-                            <td>{dummy.value}</td>
-                        </tr>
-                    ))}
+                    {isLoading ? (
+                        <tr><td colSpan="3">Loading...</td></tr>
+                    ) : error ? (
+                        <tr><td colSpan="3">Error: {error}</td></tr>
+                    ) : (
+                        dummyData.map((dummy, index) => (
+                            <tr key={index}>
+                                <td>{dummy.id}</td>
+                                <td>{dummy.name}</td>
+                                <td>{dummy.value}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
-            <Pagination
-                total={allData.length}
-                itemsPerPage={itemsPerPage}
-                currentPage={currentPage}
-                onPageChange={onPageChange}
-            />
+            {!isLoading && !error && (
+                <Pagination
+                    total={allData.length}
+                    itemsPerPage={itemsPerPage}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                />
+            )}
         </div>
     );
 };
