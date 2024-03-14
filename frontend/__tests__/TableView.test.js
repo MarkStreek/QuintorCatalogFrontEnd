@@ -48,7 +48,7 @@ describe('DummyDataTable Component', () => {
     // Initially, we expect to see the first page of data
     await waitFor(() => {
       expect(screen.getByText('Name1')).toBeInTheDocument();
-      expect(screen.getByText('Name2')).toBeInTheDocument(); // Assumes 2 rows per page based on your component
+      expect(screen.getByText('Name2')).toBeInTheDocument(); // Assuming 2 rows per page!
     });
 
     // Find and click the next page button to load the next set of data
@@ -58,7 +58,7 @@ describe('DummyDataTable Component', () => {
     // Now, we expect to see the second page of data
     await waitFor(() => {
       expect(screen.getByText('Name3')).toBeInTheDocument();
-      expect(screen.getByText('Name4')).toBeInTheDocument(); // Again assumes 2 rows per page
+      expect(screen.getByText('Name4')).toBeInTheDocument(); // Assuming 2 rows per page!
     });
   });
   
@@ -79,7 +79,26 @@ describe('DummyDataTable Component', () => {
     });
   });
 
-  // Test case for displaying loading indicator while fetching data, no loading indicator in the component yet!
+  // Test case for checking the loading state
+  it('displays loading skeletons while fetching data', async () => {
+    // Delay the fetch response to ensure the loading state is visible
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    fetch.mockImplementationOnce(() => delay(100).then(() => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve([]), // Resolve with empty data
+    })));
+
+    render(<DummyDataTable />);
+
+    // Check for the presence of the Skeleton components
+    const skeletons = screen.getAllByTestId('skeleton');
+    expect(skeletons.length).toBeGreaterThanOrEqual(1); // Correct assertion for array length
+
+    // Optionally, wait for the fetch to complete and loading to disappear
+    await waitFor(() => expect(screen.queryAllByTestId('skeleton')).toHaveLength(0));
+  });
+
+
 });
 
 
