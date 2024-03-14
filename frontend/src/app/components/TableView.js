@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import Pagination from './Pagination';
+import {Pagination} from "@nextui-org/react";
+
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableColumn,
+    TableRow,
+    TableCell,
+  } from "@nextui-org/react";
 
 const DummyDataTable = () => {
     const [allData, setAllData] = useState([]);
     const [dummyData, setDummyData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [Page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null); // State om fouten bij te houden
-    const itemsPerPage = 2;
+    const rowsPerPage = 2;
 
     const fetchDummyData = async () => {
         setIsLoading(true);
         setError(null); // Reset error status bij elke nieuwe fetch
         try {
-            const response = await fetch('/api/wrongendpoint');
+            const response = await fetch('/api/fetchdummydata');
             if (response.ok) {
                 const data = await response.json();
                 setAllData(data || []);
@@ -27,56 +36,59 @@ const DummyDataTable = () => {
         setIsLoading(false);
     };
 
+    const pages = Math.ceil(allData.length / rowsPerPage);
+    
+    useEffect(() => {
+        const start = (Page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        setDummyData(allData.slice(start, end));
+    }, [Page, allData]);
+
     useEffect(() => {
         fetchDummyData();
     }, []);
 
-    useEffect(() => {
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        setDummyData(allData.slice(start, end));
-    }, [currentPage, allData]);
-
-    const onPageChange = (page) => {
-        setCurrentPage(page);
-    };
+    
+    // if (isLoading) {
+    //     return <p>Loading...</p>;
+    // }
 
     return (
-        <div>
-            <h1>Dummy Data Table</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {isLoading ? (
-                        <tr><td colSpan="3">Loading...</td></tr>
-                    ) : error ? (
-                        <tr><td colSpan="3">Error: {error}</td></tr>
-                    ) : (
-                        dummyData.map((dummy, index) => (
-                            <tr key={index}>
-                                <td>{dummy.id}</td>
-                                <td>{dummy.name}</td>
-                                <td>{dummy.value}</td>
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
-            {!isLoading && !error && (
+        <Table aria-label="Dummy Data Table"
+        bottomContent={
+            <div className="">
                 <Pagination
-                    total={allData.length}
-                    itemsPerPage={itemsPerPage}
-                    currentPage={currentPage}
-                    onPageChange={onPageChange}
+                isCompact
+                showControls
+                showShadow
+                color="secondary"
+                page={Page}
+                total={pages}
+                onChange={(page) => setPage(page)}
                 />
-            )}
-        </div>
+            </div>
+        }
+        classNames={{
+            wrapper: "min-h-[222px]",
+        }}
+        >
+            <TableHeader>
+                <TableColumn>Id</TableColumn>
+                <TableColumn>Name</TableColumn>
+                <TableColumn>Value</TableColumn>
+            </TableHeader>
+            <TableBody emptyContent={"No rows to display"} loadingContent={"Loading..."}>
+                {(dummyData.map((dummy, index) => (
+                    <TableRow key={index}>
+                        <TableCell>{dummy.id}</TableCell>
+                        <TableCell>{dummy.name}</TableCell>
+                        <TableCell>{dummy.value}</TableCell>
+                    </TableRow>
+                    ))
+                )}
+            </TableBody>
+        </Table>
+        
     );
 };
 
