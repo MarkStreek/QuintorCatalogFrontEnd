@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pagination, Skeleton } from "@nextui-org/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button } from "@nextui-org/react";
+import TableComponent from './Table.js';
 
 const DummyDataTable = () => {
     const [allData, setAllData] = useState([]);
@@ -52,24 +53,7 @@ const DummyDataTable = () => {
     }, []);
 
     return (
-        <Table aria-label="Dummy Data Table"
-        bottomContent={
-            <div className="">
-                <Pagination
-                isCompact
-                showControls
-                showShadow
-                color="secondary"
-                page={Page}
-                total={pages}
-                onChange={(page) => setPage(page)}
-                />
-            </div>
-        }
-        classNames={{
-            wrapper: "min-h-[222px]",
-        }}
-        >
+        <TableComponent currentPage={Page} setPage={setPage} pages={pages}>
             <TableHeader>
                 <TableColumn>Id</TableColumn>
                 <TableColumn>Name</TableColumn>
@@ -106,7 +90,7 @@ const DummyDataTable = () => {
                     ))
                 )}
             </TableBody>
-        </Table>
+        </TableComponent>
     );
 };
 
