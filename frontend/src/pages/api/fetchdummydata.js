@@ -2,43 +2,37 @@
 // This module defines an API endpoint for fetching dummy data.
 
 /**
- * Handles the request to fetch dummy data from /api/fetchdummydata endpoint.
+ * Async function to handle the request to fetch dummy data from the REST API.
+ * The function sends a GET request to the REST API and returns the dummy data in JSON format.
+ * If an error occurs, the function logs the error message and returns a status error code.
+ * 
  * @param {Object} req - The request object representing the incoming HTTP request.
  * @param {Object} res - The response object used for sending back the desired HTTP response.
+ * @returns status codes and dummy data in JSON or error messages in JSON format.
  */
 export default async function handler(req, res) {
-    console.log('Received a request to fetch dummy data');
 
-    // Check if the request method is GET.
-    if (req.method === "GET") {
+    if (req.method !== "GET") {
+        return res.status(405).json({ error: 'Method not allowed' });
+    } else {
         try {
-            // Attempt to fetch data from a specified endpoint.
-            const response = await fetch('http://localhost:8080/api/v1/dummy-controller', {
+            let response = await fetch('http://localhost:8080/api/v1/dummy-controller', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-            
-            // Log the recieved response from the server.
-            console.log('Response from server', response);
-
-            // Extract the JSON data from the response
-            const dummyData = await response.json();
-
-            // Log the extracted dummy data.
-            console.log('Dummy data', dummyData);
-
-            // Respond with a 200 OK status code and send the dummy data in JSON format.
-            return res.status(200).json(dummyData);
+            if (response.status === 200) {
+                let dummyData = await response.json();
+                // Return a 200 OK status code and the dummy data in JSON format
+                return res.status(200).json(dummyData);
+            } else {
+                // Status code was not 200 OK, return an error message
+                return res.status(response.status).json({ error: `Error fetching the REST API, received status code: ${response.status}` });
+            }
         } catch (error) {
-            console.error('Error fetching dummy data', error);
-
-            // Respond with a 500 Internal Server Error status code if any errors occur during the fetch request.
+            // Return a 500 Internal Server Error status code and an error message
             return res.status(500).json({ error: 'Error fetching dummy data' });
         }
-    } else {
-        // If the request method is not GET, return a 405 Method Not Allowed status code.
-        return res.status(405).json({ error: 'Method not allowed' });
     }
 }

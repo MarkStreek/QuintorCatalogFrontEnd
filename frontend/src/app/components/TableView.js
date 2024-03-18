@@ -8,34 +8,42 @@ const DummyDataTable = () => {
     const [dummyData, setDummyData] = useState([]);
     const [Page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
     const rowsPerPage = 2;
 
     const fetchDummyData = async () => {
         setIsLoading(true);
-        setError(null);
 
+        /*
+        Fetch the data from the API endpoint,
+        The fetch request is made to the /api/fetchdummydata endpoint.
+        From this endpoint, a GET request is made to the Back end server to fetch the dummy data.
 
+        The response from the fetch request is then checked to see if it is ok 
+        and the data is extracted from the response.
+        Error are logged to the console if any occur during the fetch request.
+        */
         try {
-            const response = await fetch('/api/fetchdummydata');
+            let response = await fetch('/api/fetchdummydata');
             if (response.ok) {
-                const data = await response.json();
+                let data = await response.json();
+                // Update the hook with the fetched data
                 setAllData(data || []);
             } else {
-                throw new Error('Data could not be fetched.');
+                console.error('Response from the fetch request was NOT ok');
             }
         } catch (error) {
-            setError(error.message);
-
+            console.error('Error fetching dummy data', error);
         }
+        // Change the loading Hook to false
         setIsLoading(false);
     };
 
-    const pages = Math.ceil(allData.length / rowsPerPage);
-
+    let pages = Math.ceil(allData.length / rowsPerPage);
+    // Hook that's called when the data changes
+    // The hook is used to calculate the start and end index of the data to be displayed
     useEffect(() => {
-        const start = (Page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
+        let start = (Page - 1) * rowsPerPage;
+        let end = start + rowsPerPage;
         setDummyData(allData.slice(start, end));
     }, [Page, allData]);
 
