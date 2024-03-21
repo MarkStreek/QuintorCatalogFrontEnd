@@ -24,3 +24,4 @@ hs_err_pid*
 replay_pid*
 *.xml
 *.iml
+.DS_Store
