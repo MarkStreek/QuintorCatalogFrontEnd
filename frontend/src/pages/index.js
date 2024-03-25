@@ -29,7 +29,7 @@ export default function Home() {
             <br/>
             <form onSubmit={handleSubmit}>
             <p className="m-2">Search for a device below</p>
-            <div className="flex w-1/3">
+            <div className="flex">
                 <Input
                     size="md"
                     type="text"

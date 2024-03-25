@@ -12,7 +12,7 @@ import Link from "next/link";
 export default function Navbar() {
     return(
     <div
-        className="bg-gray-800 text-white w-full xs:flex sm:flex md:hidden h-14 items-center justify-between px-2 fixed top-0 left-0">
+        className="bg-gray-800 text-white w-full xs:flex sm:flex md:hidden h-16 items-center justify-between px-2 fixed top-0 left-0">
         <span className="text-2xl font-extrabold">Quintor Catalog</span>
         <nav>
             <ul className="flex space-x-3">
