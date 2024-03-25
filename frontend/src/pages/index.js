@@ -17,7 +17,7 @@ export default function Home() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                let response = await fetch("http://localhost:8080/api/v1/dummy-controller");
+                let response = await fetch("http://localhost:8080/components");
                 let data = await response.json();
                 setData(data);
             } catch (error) {
@@ -34,7 +34,10 @@ export default function Home() {
         <RootLayout>
             <h1>Hello World!</h1>
             <h3>Here is a table of dummy data</h3>
-            <DummyDataTable data={data} loading={loading} error={error}/>
+            <br></br>
+            <div className="w-5/6 mx-auto">
+                <DummyDataTable data={data} loading={loading} error={error}/>
+            </div>
         </RootLayout>
     );
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { TableHeader, TableBody, TableColumn} from "@nextui-org/react";
 import TableComponent from './CreateTable.js';
-import renderDataOrSkeleton from "@/app/components/RenderDataOrSkeleton";
+import renderSkeleton from "@/app/components/RenderSkeleton";
+import renderData from "@/app/components/RenderData";
 
 /**
  * Function that creates the dummy data table and returns it.
@@ -19,7 +20,7 @@ export default function DummyDataTable({data, loading}) {
     const [currentPageNumber, setCurrentPageNumber] = useState(1);
 
     // calculate the total amount of pages
-    const rowsPerPage = 20;
+    const rowsPerPage = 10;
     let amountOfPages = Math.ceil(data.length / rowsPerPage);
 
     /*
@@ -35,7 +36,7 @@ export default function DummyDataTable({data, loading}) {
 
     /*
     Using the TableComponent function from the CreateTable.js file to create the table component.
-    The renderDataOrSkeleton function from the RenderDataOrSkeleton.js file is used to render the table body,
+    The renderSkeleton function from the RenderSkeleton.js file is used to render the table body,
     based on the loading:
         - If the loading is true, the function returns a skeleton data.
         - If the loading is false, the function returns the actual data.
@@ -48,11 +49,15 @@ export default function DummyDataTable({data, loading}) {
             <TableHeader>
                 <TableColumn>Id</TableColumn>
                 <TableColumn>Name</TableColumn>
-                <TableColumn>Value</TableColumn>
+                <TableColumn>Brand name</TableColumn>
+                <TableColumn>Model</TableColumn>
+                <TableColumn>Serial number</TableColumn>
+                <TableColumn>Invoice number</TableColumn>
+                <TableColumn>Location name</TableColumn>
+                <TableColumn>Specifications</TableColumn>
             </TableHeader>
             <TableBody emptyContent={"No rows to display"}>
-                {/* Render the table body or skeleton data based on the loading...*/}
-                {renderDataOrSkeleton(loading, rowsPerPage, dummyData)}
+                {loading ? renderSkeleton(rowsPerPage) : renderData(dummyData)}
             </TableBody>
         </TableComponent>
     );
