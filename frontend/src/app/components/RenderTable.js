@@ -3,6 +3,7 @@ import { TableHeader, TableBody, TableColumn} from "@nextui-org/react";
 import TableComponent from './CreateTable.js';
 import renderSkeleton from "@/app/components/RenderSkeleton";
 import renderData from "@/app/components/RenderData";
+import FormComponent from './FormComponent.js';
 
 /**
  * Function that creates the dummy data table and returns it.
@@ -42,23 +43,26 @@ export default function DummyDataTable({data, loading}) {
         - If the loading is false, the function returns the actual data.
      */
     return (
-        <TableComponent
-            currentPage={currentPageNumber}
-            setPage={setCurrentPageNumber}
-            amountOfPages={amountOfPages}>
-            <TableHeader>
-                <TableColumn>Id</TableColumn>
-                <TableColumn>Name</TableColumn>
-                <TableColumn>Brand name</TableColumn>
-                <TableColumn>Model</TableColumn>
-                <TableColumn>Serial number</TableColumn>
-                <TableColumn>Invoice number</TableColumn>
-                <TableColumn>Location name</TableColumn>
-                <TableColumn>Specifications</TableColumn>
-            </TableHeader>
-            <TableBody emptyContent={"No rows to display"}>
-                {loading ? renderSkeleton(rowsPerPage) : renderData(dummyData)}
-            </TableBody>
-        </TableComponent>
+        <div>
+            <TableComponent
+                currentPage={currentPageNumber}
+                setPage={setCurrentPageNumber}
+                amountOfPages={amountOfPages}>
+                <TableHeader>
+                    <TableColumn>Id</TableColumn>
+                    <TableColumn>Name</TableColumn>
+                    <TableColumn>Brand name</TableColumn>
+                    <TableColumn>Model</TableColumn>
+                    <TableColumn>Serial number</TableColumn>
+                    <TableColumn>Invoice number</TableColumn>
+                    <TableColumn>Location name</TableColumn>
+                    <TableColumn>Specifications</TableColumn>
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display"}>
+                    {loading ? renderSkeleton(rowsPerPage) : renderData(dummyData)}
+                </TableBody>
+            </TableComponent>
+            <FormComponent />
+        </div>
     );
 };
