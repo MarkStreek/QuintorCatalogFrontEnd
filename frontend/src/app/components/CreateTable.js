@@ -11,21 +11,21 @@ import { Table } from "@nextui-org/react";
  */
 const TableComponent = (props) => {
     return (
-        <Table 
-        aria-label="Dummy Data Table"
-        bottomContent = {
-            <div className="">
-                <Pagination
-                    isCompact
-                    showControls
-                    showShadow
-                    color="secondary"
-                    page={props.currentPage}
-                    total={props.amountOfPages}
-                    onChange={(page) => props.setPage(page)}
-                />
+        <Table
+            aria-label="Dummy Data Table"
+            bottomContent = {
+                <div className="">
+                    <Pagination
+                        isCompact
+                        showControls
+                        showShadow
+                        color="secondary"
+                        page={props.currentPage}
+                        total={props.amountOfPages}
+                        onChange={(page) => props.setPage(page)}
+                    />
             </div>}
-        classNames={{wrapper: "min-h-[222px]"}}
+            classNames={{wrapper: "min-h-[222px]"}}
         >
             {props.children}
         </Table>

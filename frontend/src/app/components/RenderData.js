@@ -1,6 +1,7 @@
-import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, TableCell, TableRow} from "@nextui-org/react";
+import {Button, Dropdown, DropdownItem,
+        DropdownMenu, DropdownTrigger,
+        TableCell, TableRow} from "@nextui-org/react";
 import React from "react";
-
 
 export default function renderData(dummyData) {
     return (dummyData.map((dummy, index) => (
