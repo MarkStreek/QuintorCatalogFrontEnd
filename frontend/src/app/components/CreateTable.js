@@ -2,11 +2,13 @@ import React from "react";
 import { Pagination } from "@nextui-org/react";
 import { Table } from "@nextui-org/react";
 
-/*
-Function that returns the Table component from the nextui library.
-The function takes in props as an argument and 
-returns the Table component with the props passed in.
-*/
+/**
+ * Function that returns the Table component from the nextui library.
+ * The function takes in props as an argument and
+ * returns the Table component with the props passed in.
+ * @param props the props to pass to the Table component
+ * @returns {Element} the Table component
+ */
 const TableComponent = (props) => {
     return (
         <Table 
@@ -19,7 +21,7 @@ const TableComponent = (props) => {
                     showShadow
                     color="secondary"
                     page={props.currentPage}
-                    total={props.pages}
+                    total={props.amountOfPages}
                     onChange={(page) => props.setPage(page)}
                 />
             </div>}
