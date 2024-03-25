@@ -1,43 +1,48 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import RootLayout from "../app/components/RootLayout";
-import DummyDataTable from "../app/components/RenderTable";
+import { Button, Input } from "@nextui-org/react";
+import Link from "next/link";
 
+/**
+ * Function that returns the home page of the application.
+ * @returns {Element} The home page.
+ */
 export default function Home() {
 
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    /*
-    useEffect hook that runs when the component mounts. It fetches the data from the API.
-    The hook updates the states based on the fetch status. These states are passed to the DummyDataTable component.
-    In the dummy data table component, the states are used to create, render, and update the table.
-     */
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                let response = await fetch("http://localhost:8080/components");
-                let data = await response.json();
-                setData(data);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-
-        }
-        void fetchData();
-    }, []);
+    const [search, setSearch] = useState("");
+    function handleSubmit() {
+        console.log(search);
+    }
 
     return (
         <RootLayout>
-            <h1>Hello World!</h1>
-            <h3>Here is a table of dummy data</h3>
-            <br></br>
-            <div className="w-5/6 mx-auto">
-                <DummyDataTable data={data} loading={loading} error={error}/>
+            <h1 className="text-5xl">Quintor hardware catalog</h1>
+            <br/>
+            <p className="text-2xl">Welcome, User</p>
+            <br/>
+            <p className="text-2xl">Quick links:</p>
+            <div className="mt-2">
+                <Button color="primary" size="large">
+                    <Link href="/devices">Devices</Link>
+                </Button>
             </div>
+            <br/>
+            <form onSubmit={handleSubmit}>
+            <p className="m-2">Search for a device below</p>
+            <div className="flex w-1/3">
+                <Input
+                    size="md"
+                    type="text"
+                    variant="bordered"
+                    label="Search for devices"
+                    placeholder="e.g. laptop or keyboard"
+                    className="h-12"
+                    onChange={(event) => setSearch(event.target.value)}
+                />
+                <Button type="submit" color="primary" size="large" className="ml-2 h-12 w-28">Search</Button>
+            </div>
+            </form>
+
         </RootLayout>
     );
 }
