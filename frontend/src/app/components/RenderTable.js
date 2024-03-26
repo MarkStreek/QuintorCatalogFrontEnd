@@ -62,6 +62,7 @@ export default function DummyDataTable({data, loading}) {
                     {loading ? renderSkeleton(rowsPerPage) : renderData(dummyData)}
                 </TableBody>
             </TableComponent>
+            <br/>
             <FormComponent />
         </div>
     );

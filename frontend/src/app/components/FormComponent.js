@@ -126,7 +126,7 @@ export default function FormComponent() {
 return (
     <>
         <Button onPress={onOpen} color="primary">
-            Open Modal
+            Add Device
         </Button>
         <Modal 
         isOpen={isOpen} 
@@ -136,7 +136,7 @@ return (
         >
             <ModalContent>
                 <ModalHeader className="flex flex-col gap-1">
-                    Add Component
+                    Add Device
                 </ModalHeader>
                 <ModalBody>
                     <Input
