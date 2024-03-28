@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { TableHeader, TableBody, TableColumn} from "@nextui-org/react";
 import TableComponent from './CreateTable.js';
-import renderSkeleton from "@/app/components/RenderSkeleton";
-import renderData from "@/app/components/RenderData";
-import FormComponent from './FormComponent.js';
+import renderSkeleton from "@/app/components/Table/RenderSkeleton";
+import renderData from "@/app/components/Table/RenderData";
+import FormComponent from '../FormComponent.js';
 
 /**
  * Function that creates the dummy data table and returns it.

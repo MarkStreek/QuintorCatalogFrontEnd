@@ -2,21 +2,19 @@ import React from 'react';
 import Link from "next/link";
 
 /**
- * Function that return the Sidebar component.
- * This sidebar component is used in the root layout component.
- * It contains the navigation links to the home and about page.
- * The sidebar is only visible on "bigger" screens.
+ * Function that returns the Navbar component.
+ * This navbar component is used in the root layout component.
+ * The navbar is visible on "smaller" screens.
+ * When the screen is below a certain width, the navbar is visible.
  *
- * @returns {Element} The Sidebar component.
+ * @returns {Element} The Navbar component.
  */
-export default function Sidebar() {
+export default function Navbar() {
     return (
-        <div className="h-screen bg-gray-800 text-white w-48 space-y-6 py-7 px-2 fixed inset-y-0 left-0 overflow-auto">
-            <div className="flex items-center space-x-4">
-                <span className="text-2xl xs:hidden md:block font-extrabold">Quintor Catalog</span>
-            </div>
+        <div className="bg-gray-800 text-white w-full xs:flex sm:flex md:hidden h-16 items-center justify-between px-2 fixed top-0 left-0 z-10">
+            <span className="text-2xl font-extrabold">Quintor Catalog</span>
             <nav>
-                <ul className="space-y-3">
+                <ul className="flex space-x-3">
                     <li>
                         <Link href="/"
                               className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Home</Link>
@@ -24,6 +22,10 @@ export default function Sidebar() {
                     <li>
                         <Link href="/devices"
                               className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Devices</Link>
+                    </li>
+                    <li>
+                        <Link href="/addDevice"
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Add device</Link>
                     </li>
                     <li>
                         <Link href="/about"

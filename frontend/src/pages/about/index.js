@@ -1,5 +1,5 @@
 import React from "react";
-import RootLayout from "@/app/components/RootLayout";
+import RootLayout from "@/app/components/RootLayout/RootLayout";
 export default function Index() {
     return(
         <RootLayout>

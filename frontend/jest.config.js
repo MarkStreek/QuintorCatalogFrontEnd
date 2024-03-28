@@ -1,5 +1,5 @@
 module.exports = {
-  setupFilesAfterEnv: ['/Users/sibrenmac/Code/QuintorCatalogFrontEnd/frontend/jest.setup.js'],
+  setupFilesAfterEnv: ['/Users/mvandestreek/Desktop/QuintorCatalogFrontEnd/frontend/jest.setup.js'],
   testEnvironment: 'jsdom',
   collectCoverage: true,
   coverageProvider: 'v8',

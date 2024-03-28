@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import DummyDataTable from 'frontend/src/app/components/TableView';
+import {DummyDataTable} from '../components/DummyDataTable';
 
 describe('DummyDataTable Component', () => {
   // Mock global fetch function

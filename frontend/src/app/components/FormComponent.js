@@ -184,7 +184,7 @@ return (
                         bordered
                         label="Location City"
                         name="locationCity"
-                        value={componentData.locationCity}
+n                        value={componentData.locationCity}
                         onChange={handleChange}
                     />
                     <Input

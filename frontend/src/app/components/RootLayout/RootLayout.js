@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from "@/app/components/Navbar";
-import Sidebar from "@/app/components/Sidebar";
+import Navbar from "@/app/components/RootLayout/Navbar";
+import Sidebar from "@/app/components/RootLayout/Sidebar";
 
 /**
  * Function that returns the RootLayout component.

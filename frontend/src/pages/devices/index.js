@@ -1,6 +1,6 @@
 import React from "react";
-import RootLayout from "@/app/components/RootLayout";
-import DummyDataTable from "@/app/components/RenderTable";
+import RootLayout from "@/app/components/RootLayout/RootLayout";
+import DummyDataTable from "@/app/components/Table/RenderTable";
 import UseFetch from "@/hooks/UseFetch";
 
 /**

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import RootLayout from "../app/components/RootLayout";
+import RootLayout from "../app/components/RootLayout/RootLayout";
 import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 
