@@ -13,26 +13,25 @@ export default function Sidebar() {
     return (
         <div className="h-screen bg-gray-800 text-white w-48 space-y-6 py-7 px-2 fixed inset-y-0 left-0 overflow-auto">
             <div className="flex items-center space-x-4">
-                <span className="text-2xl xs:hidden md:block font-extrabold">Quintor Catalog</span>
+                <Link href="/"><span className="text-2xl font-extrabold">Quintor Catalogus</span></Link>
             </div>
             <nav>
                 <ul className="space-y-3">
                     <li>
-                        <Link href="/public"
+                        <Link href="/"
                               className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Home</Link>
                     </li>
                     <li>
                         <Link href="/devices"
-                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Devices</Link>
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten</Link>
                     </li>
                     <li>
                         <Link href="/addDevice"
-                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Add
-                            device</Link>
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten toevoegen</Link>
                     </li>
                     <li>
                         <Link href="/about"
-                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">About</Link>
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Over</Link>
                     </li>
                 </ul>
             </nav>

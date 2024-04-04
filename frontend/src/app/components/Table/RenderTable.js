@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { TableHeader, TableBody, TableColumn} from "@nextui-org/react";
+import {TableHeader, TableBody, TableColumn, Button} from "@nextui-org/react";
 import TableComponent from './CreateTable.js';
 import renderSkeleton from "@/app/components/Table/RenderSkeleton";
 import renderData from "@/app/components/Table/RenderData";
 import FormComponent from '../FormComponent.js';
+import Link from "next/link";
 
 /**
  * Function that creates the dummy data table and returns it.
@@ -58,12 +59,16 @@ export default function DummyDataTable({data, loading}) {
                     <TableColumn>Location name</TableColumn>
                     <TableColumn>Specifications</TableColumn>
                 </TableHeader>
-                <TableBody emptyContent={"No rows to display"}>
+                <TableBody emptyContent={"Geen rijen om weer te geven"}>
                     {loading ? renderSkeleton(rowsPerPage) : renderData(dummyData)}
                 </TableBody>
             </TableComponent>
             <br/>
-            <FormComponent />
+            <Link href="/addDevice">
+            <Button color="primary">
+                Apparaat toevoegen
+            </Button>
+            </Link>
         </div>
     );
 };

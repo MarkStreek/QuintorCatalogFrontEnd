@@ -23,7 +23,7 @@ export default function devices() {
     return (
         <RootLayout>
             <div>
-                <h1 className="text-5xl">List of all hardware devices</h1>
+                <h1 className="text-5xl">Lijst van alle apparaten</h1>
                 <br/>
                 <DummyDataTable data={data} loading={loading} error={error}/>
             </div>

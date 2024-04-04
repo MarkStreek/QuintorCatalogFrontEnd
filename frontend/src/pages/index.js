@@ -16,30 +16,30 @@ export default function Home() {
 
     return (
         <RootLayout>
-            <h1 className="text-5xl">Quintor hardware catalog</h1>
+            <h1 className="text-5xl">Quintor hardware catalogus</h1>
             <br/>
-            <p className="text-2xl">Welcome, User</p>
+            <p className="text-2xl">Welkom, User</p>
             <br/>
-            <p className="text-2xl">Quick links:</p>
+            <p className="text-2xl">Snelle links:</p>
             <div className="mt-2">
                 <Button color="primary" size="large">
-                    <Link href="/devices">Devices</Link>
+                    <Link href="/devices">Apparaten</Link>
                 </Button>
             </div>
             <br/>
             <form onSubmit={handleSubmit}>
-            <p className="m-2">Search for a device below</p>
+            <p className="m-2">Zoek naar een apparaat</p>
             <div className="flex">
                 <Input
                     size="md"
                     type="text"
                     variant="bordered"
-                    label="Search for devices"
-                    placeholder="e.g. laptop or keyboard"
+                    label="Zoek voor apparaten"
+                    placeholder="b.v. laptop of toetsenbord"
                     className="h-12"
                     onChange={(event) => setSearch(event.target.value)}
                 />
-                <Button type="submit" color="primary" size="large" className="ml-2 h-12 w-28">Search</Button>
+                <Button type="submit" color="primary" size="large" className="ml-2 h-12 w-28">Zoek</Button>
             </div>
             </form>
 
