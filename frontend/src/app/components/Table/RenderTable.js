@@ -50,13 +50,13 @@ export default function DummyDataTable({data, loading}) {
                 setPage={setCurrentPageNumber}
                 amountOfPages={amountOfPages}>
                 <TableHeader>
-                    <TableColumn>Id</TableColumn>
-                    <TableColumn>Name</TableColumn>
-                    <TableColumn>Brand name</TableColumn>
+                    <TableColumn>Type</TableColumn>
+                    <TableColumn>Merk naam</TableColumn>
                     <TableColumn>Model</TableColumn>
-                    <TableColumn>Serial number</TableColumn>
-                    <TableColumn>Invoice number</TableColumn>
-                    <TableColumn>Location name</TableColumn>
+                    <TableColumn>Serienummer</TableColumn>
+                    <TableColumn>Factuurnummer</TableColumn>
+                    <TableColumn>Locatie naam</TableColumn>
+                    <TableColumn>Locatie Stad</TableColumn>
                     <TableColumn>Specifications</TableColumn>
                 </TableHeader>
                 <TableBody emptyContent={"Geen rijen om weer te geven"}>

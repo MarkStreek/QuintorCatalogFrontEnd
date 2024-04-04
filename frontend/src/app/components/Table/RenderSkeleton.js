@@ -15,13 +15,13 @@ export default function renderSkeleton(rowsPerPage) {
     return (Array.from({length: rowsPerPage}).map((_, index) => (
         <TableRow key={index}>
             <TableCell>
-                <Skeleton className='w-2/5 rounded-lg' data-testid="skeleton">
-                    <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                <Skeleton className='w-4/5 rounded-lg'>
+                    <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
                 </Skeleton>
             </TableCell>
             <TableCell>
-                <Skeleton className='w-4/5 rounded-lg'>
-                    <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                <Skeleton className='w-2/5 rounded-lg' data-testid="skeleton">
+                    <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
                 </Skeleton>
             </TableCell>
             <TableCell>
