@@ -16,7 +16,7 @@ export default function devices() {
     The parameter is the URL to fetch data from.
     The REACT useStates: data, loading, and error are returned from fetch hook and defined.
      */
-    const {data, loading, error} = UseFetch("http://localhost:8080/components");
+    const {data, loading, error} = UseFetch("http://localhost:8080/devices");
 
     // Return the RootLayout component,
     // with the right data passed to the DummyDataTable component.

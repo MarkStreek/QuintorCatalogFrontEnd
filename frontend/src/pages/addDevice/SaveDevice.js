@@ -2,7 +2,7 @@
 Translation map for the keys of the device data.
  */
 const translationMap = {
-    Type: "name",
+    Type: "type",
     Merknaam: "brandName",
     Model: "model",
     Serienummer: "serialNumber",
@@ -25,7 +25,7 @@ export default async function POSTnewDevice(DeviceData) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(translatedData)
     };
-    let response = await fetch('http://localhost:8080/components', requestOptions)
+    let response = await fetch('http://localhost:8080/devices', requestOptions)
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
