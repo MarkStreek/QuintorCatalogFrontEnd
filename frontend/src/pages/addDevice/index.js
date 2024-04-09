@@ -15,6 +15,14 @@ import POSTnewDevice from "@/pages/addDevice/SaveDevice";
 import Selector from "@/pages/addDevice/CreateSpecificationInput";
 import AddNewSpecification from "@/pages/addDevice/AddNewSpecification";
 
+
+/**
+ * The main function of the addDevice page.
+ * this function returns the code for the page
+ * and calls function from other files to handle components.
+ *
+ * @returns {Element} the addDevice page
+ */
 export default function AddDevice() {
 
     // REACT STATE To store the already used specs
