@@ -83,7 +83,6 @@ export default function AddDevice() {
                 alreadyUsedSpecs={alreadyUsedSpecs}
                 setAlreadyUsedSpecs={setAlreadyUsedSpecs}
             />
-            <pre>{JSON.stringify(DeviceData, null, 2)}</pre>
         </RootLayout>
     );
 }

@@ -3,7 +3,6 @@ import {TableHeader, TableBody, TableColumn, Button} from "@nextui-org/react";
 import TableComponent from './CreateTable.js';
 import renderSkeleton from "@/app/components/Table/RenderSkeleton";
 import renderData from "@/app/components/Table/RenderData";
-import FormComponent from '../FormComponent.js';
 import Link from "next/link";
 
 /**
