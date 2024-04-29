@@ -1,97 +1,133 @@
-/*
-This file contains the selector component.
-The export default function Selector is the main function that renders the selector component.
-It uses the handleSpecificationsChange function to handle the change of the specifications
-and updates the DeviceData state.
- */
-
+import React from "react";
 import {Input, Select, SelectItem} from "@nextui-org/react";
-import React, {useState} from "react";
 
 /**
- * Main function that renders the selector component.
- * It's the part of the addDevice page where the user can
- * select specifications and add values to them.
+ * Main global export function that creates the selector component for the AddDevice page.
+ * The selector component is used to select specifications and add values to them.
+ * This function is split into multiple functions to create the selector and the input fields.
+ * See the return statement for the full component.
  *
- * @param alreadyUsedSpecs the already used specs
- * @param DeviceData the device data state
- * @param setDeviceData the function to set the device data state
+ * @param alreadyUsedSpecs the already used specs in the database
+ * @param DeviceData the state of the device data (component that holds the full state)
+ * @param setDeviceData the function to set the state of the device data
+ * @param values the selected values
+ * @param setValues the function to set the selected values
  * @returns {Element} the selector component
  */
-export default function Selector({alreadyUsedSpecs, DeviceData, setDeviceData}) {
+export default function Selector({ alreadyUsedSpecs, DeviceData, setDeviceData, values, setValues}) {
 
-    // REACT STATE To store the selected specs
-    const [selectedSpecs, setSelectedSpecs] = useState({});
+    /**
+     * Small function that handles the selection change of the selector.
+     * When a user selects a value, the state of the selected values will be updated.
+     *
+     * @param event the event of the selector
+     */
+    const handleSelectionChange = (event) => {
+        setValues(new Set(event.target.value.split(",")));
+    };
 
     return (
         <div>
-            <h1 className="text-3xl mb-6">Technische specificaties</h1>
-            <Select
-                label="Selecteer specificaties"
-                selectionMode="multiple"
-                onSelectionChange={(selectedItems) => {
-                    const updatedSelectedSpecs = {};
-                    selectedItems.forEach((item) => {
-                        updatedSelectedSpecs[item] = alreadyUsedSpecs.find(spec => spec.specName === item).dataType;
-                    });
-                    setSelectedSpecs(updatedSelectedSpecs);
-                }}
-            >
-                {Object.entries(alreadyUsedSpecs).map(([key, value]) => (
-                    <SelectItem key={value.specName}>
-                        {value.specName}
-                    </SelectItem>
-                ))}
-            </Select>
-            <p className="text-small ml-2 mt-2 text-default-500">Aantal geselecteerde
-                specificaties: {Object.entries(selectedSpecs).length}</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:break-after-auto">
-                {Object.entries(selectedSpecs).map(([spec, dataType]) => (
-                    <Input
-                        key={spec}
-                        size="md"
-                        type="text"
-                        variant="bordered"
-                        label={spec}
-                        className="mt-2 pr-3 pb-0.5 pt-0.5 relative z-0 w-full"
-                        onChange={(e) => handleSpecificationsChange(spec, e.target.value, dataType, DeviceData, setDeviceData)}
-                    />
-                ))}
-            </div>
+            {/*
+            Create the selector and specify the handleSelectionChange as parameter
+            */}
+            {createSelectorWithOptions(values, handleSelectionChange, alreadyUsedSpecs)}
+            <p className="text-small text-default-500">Selected: {Array.from(values).join(", ")}</p>
+            {/*
+            Create the Input options and specify the DeviceData as parameter to directly store the
+            values in the state of the device data.
+            */}
+            {createInputOptionsBasedOnSelectedItems(values, alreadyUsedSpecs, DeviceData, setDeviceData)}
         </div>
     );
 }
 
 /**
- * Function that handles the change of the specifications.
- * Because the specs are inside an object and in an array,
- * we need to handle the change of the specs differently.
+ * Function that creates a selector with options
+ * The returned block with code is a Select component with SelectItems,
+ * that is placed in the main Selector function.
  *
- * We're changing the specs in the DeviceData state realtime.
- * Therefore, we have to check if it already exists or not.
- * If it already exists, we update the value. If it doesn't exist,
- * we add a new object to the array with the provided specName, specValue and dataType.
- *
- * @param specName specification name
- * @param specValue specification value
- * @param dataType dataType of the specification
- * @param DeviceData the device data state
- * @param setDeviceData the function to set the device data state
+ * @param values the selected values
+ * @param handleSelectionChange the function that handles the selection change
+ * @param alreadyUsedSpecs the already used specs in the database
+ * @returns {Element} the selector with options
  */
-const handleSpecificationsChange = (specName, specValue, dataType, DeviceData, setDeviceData) => {
+function createSelectorWithOptions(values, handleSelectionChange, alreadyUsedSpecs) {
+    return <Select
+        label="Specificaties"
+        selectionMode="multiple"
+        placeholder="Selecteer een specificatie"
+        selectedKeys={values}
+        className="max-w-xs"
+        onChange={handleSelectionChange}
+    >
+        {Object.entries(alreadyUsedSpecs).map(([key, value]) => (
+            <SelectItem key={value.specName}>
+                {value.specName}
+            </SelectItem>
+        ))}
+    </Select>;
+}
+
+/**
+ * Function that creates input options based on selected items.
+ * Based on the selected values, the function will create an input field for each selected value.
+ * When updating these fields, the handleInputChange function will be called.
+ * HandleInputChange will update the state of the specificaties in the DeviceData.
+ *
+ * @param values the selected values
+ * @param alreadyUsedSpecs the already used specs in the database
+ * @param DeviceData the state of the device data (component that holds the full state)
+ * @param setDeviceData the function to set the state of the device data
+ * @returns {Element} the input fields based on the selected items
+ */
+function createInputOptionsBasedOnSelectedItems(values, alreadyUsedSpecs, DeviceData, setDeviceData) {
+    return <div className="grid grid-cols-1 md:grid-cols-2 md:break-after-auto gap-2">
+        {Array.from(values).map((key) => {
+            const spec = alreadyUsedSpecs.find(spec => spec.specName === key);
+            if (spec) {
+                return (
+                    <Input
+                        key={key}
+                        size="md"
+                        type="text"
+                        variant="bordered"
+                        label={key}
+                        value={DeviceData[key]}
+                        onChange={(e) => handleInputChangeOfInput(DeviceData, setDeviceData, key, e.target.value, spec.dataType)}
+                    />
+                );
+            }
+            return null;
+        })}
+    </div>;
+}
+
+/**
+ * Function that handles the input change of a specific input field.
+ * When a client types in the input field, the state of the specificaties in the DeviceData will be updated.
+ * Because the state has a complex nesting structure, the function needs to do some checks to update the correct value.
+ *
+ * @param DeviceData the state of the device data
+ * @param setDeviceData the function to set the state of the device data
+ * @param specName the name of the specification
+ * @param specValue the value of the specification
+ * @param dataType the data type of the specification
+ */
+function handleInputChangeOfInput(DeviceData, setDeviceData, specName, specValue, dataType) {
     const specIndex = DeviceData.specificaties.findIndex(spec => spec.specName === specName);
     if (specIndex !== -1) {
         const updatedSpecs = [...DeviceData.specificaties];
         updatedSpecs[specIndex].value = specValue;
         updatedSpecs[specIndex].dataType = dataType;
-        setDeviceData(prevState => ({...prevState,
-            specificaties: updatedSpecs,
-        }));
+        setDeviceData(prevState => ({...prevState, specificaties: updatedSpecs}));
     } else {
-        setDeviceData(prevState => ({...prevState,
-            specificaties: [...prevState.specificaties,
-                { specName: specName, value: specValue, dataType: dataType }
+        setDeviceData(prevState => ({
+            ...prevState,
+            specificaties: [
+                ...prevState.specificaties,
+                {specName: specName, value: specValue, dataType: dataType}
             ]
         }));
     }
-};
+}
