@@ -1,8 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import {TableHeader, TableBody, TableColumn, Button, Pagination, Table, TableRow, TableCell, SortDescriptor} from "@nextui-org/react";
+import React, {useState, useEffect, useMemo, useCallback} from 'react';
+import {
+    TableHeader,
+    TableBody,
+    TableColumn,
+    Pagination,
+    Table,
+    TableRow,
+    TableCell,
+    SortDescriptor,
+    Input
+} from "@nextui-org/react";
+
 import renderSkeleton from "@/app/components/Table/RenderSkeleton";
 import Link from "next/link";
 import {useAsyncList} from "@react-stately/data";
+import {FaSearch} from "react-icons/fa";
 
 /**
  * Function that creates the dummy data table and returns it.
@@ -15,101 +27,207 @@ import {useAsyncList} from "@react-stately/data";
  * @returns {Element} the dummy data table
  */
 export default function DummyDataTable({data, loading}) {
-    // state variables to store the dummy data and the current page number
-    const [dummyData, setDummyData] = useState([]);
-    const [currentPageNumber, setCurrentPageNumber] = useState(1);
 
-    // calculate the total amount of pages
-    const rowsPerPage = 10;
-    let amountOfPages = Math.ceil(data.length / rowsPerPage);
+    const [filterValue, setFilterValue] = useState('');
+    const hasSearchFilter = Boolean(filterValue);
 
-    /*
-    useEffect hook that runs when the currentPageNumber or data changes.
-    1. The hook calculates the start and end index of the data to display.
-    2. With the calculated start and end, the right amount of data is sliced from the data array.
-     */
-    useEffect(() => {
-        let start = (currentPageNumber - 1) * rowsPerPage;
-        let end = start + rowsPerPage;
-        setDummyData(data.slice(start, end));
-    }, [currentPageNumber, data]);
+    const filteredItems = useMemo(() => {
+        let filteredDevices = [...data];
 
-    /*
-    Using the TableComponent function from the CreateTable.js file to create the table component.
-    The renderSkeleton function from the RenderSkeleton.js file is used to render the table body,
-    based on the loading:
-        - If the loading is true, the function returns a skeleton data.
-        - If the loading is false, the function returns the actual data.
-     */
+        if (hasSearchFilter) {
+            filteredDevices = filteredDevices.filter(user =>
+                user.model.toLowerCase().includes(filterValue.toLowerCase())
+            );
+        }
 
+        return filteredDevices;
+    }, [data, filterValue, hasSearchFilter]);
 
-    async function sort(items, sortDescriptor) {
-        console.log(items, sortDescriptor);
-    }
+    const rowsPerPage = 4;
+    const [page, setPage] = useState(1);
+    const pages = Math.ceil(filteredItems.length / rowsPerPage);
+
+    const items = useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return filteredItems.slice(start, end);
+    }, [page, filteredItems]);
+
+    const [sortDescriptor, setSortDescriptor] = useState({
+        column: 'name',
+        direction: 'ascending'
+    });
+
+    const sortedItems = useMemo(() => {
+        return [...items].sort((a, b) => {
+            const first = a[sortDescriptor.column];
+            const second = b[sortDescriptor.column];
+            const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+            return sortDescriptor.direction === 'descending' ? -cmp : cmp;
+        });
+    }, [sortDescriptor, items]);
+
+    const onSearchChange = useCallback((value) => {
+        if (value) {
+            setFilterValue(value);
+            setPage(1);
+        } else {
+            setFilterValue('');
+        }
+    }, []);
+
+    const onClear = useCallback(() => {
+        setFilterValue('');
+        setPage(1);
+    }, []);
+
+    const topContent = useMemo(() => {
+        return (
+            <div className='flex flex-col gap-4'>
+                <div className='flex items-end justify-between gap-3'>
+                    <Input
+                        isClearable
+                        className='w-full sm:max-w-[44%]'
+                        placeholder='Zoek op modelnaam...'
+                        startContent={<FaSearch />}
+                        value={filterValue}
+                        onClear={() => onClear()}
+                        onValueChange={onSearchChange}
+                    />
+                </div>
+            </div>
+        );
+    }, [filterValue, onSearchChange, onClear]);
 
     return (
-        <div>
-            <Table
-                aria-label="Dummy Data Table"
-                color={"primary"}
-                selectionMode={"multiple"}
-                onSortChange={sort}
-                sortDescriptor={sort}
-                bottomContent = {
-                    <div className="">
-                        <Pagination
-                            isCompact
-                            showControls
-                            showShadow
-                            color="secondary"
-                            page={currentPageNumber}
-                            total={amountOfPages}
-                            onChange={(page) => props.setPage(page)}
-                        />
-                    </div>}
-                classNames={{wrapper: "min-h-[222px]"}}
-            >
-                <TableHeader>
-                    <TableColumn allowsSorting key="type">Type</TableColumn>
-                    <TableColumn allowsSorting key="brandName">Merk naam</TableColumn>
-                    <TableColumn allowsSorting key="model">Model</TableColumn>
-                    <TableColumn allowsSorting key="serialNumber">Serienummer</TableColumn>
-                    <TableColumn allowsSorting key="invoiceNumber">Factuurnummer</TableColumn>
-                    <TableColumn allowsSorting key="locationName">Locatie naam</TableColumn>
-                    <TableColumn allowsSorting key="locationCity">Locatie Stad</TableColumn>
-                    <TableColumn>Specifications</TableColumn>
-                </TableHeader>
-                <TableBody emptyContent={"Geen rijen om weer te geven"}>
-                    {loading ? renderSkeleton(rowsPerPage) : dummyData.map((dummy, index) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <TableRow>
-                            <TableCell className="align-top whitespace-pre-wrap">{dummy.type}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{dummy.brandName}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{dummy.model}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{dummy.serialNumber}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{dummy.invoiceNumber}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{dummy.locationName}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{dummy.locationCity}</TableCell>
-                            {/* Gebruik aangepaste stijlen voor de laatste cel */}
-                            <TableCell>
-                                {dummy.specs && dummy.specs.length > 0 ? (
-                                    dummy.specs.map((spec, index) => (
-                                        // Gebruik een <div> in plaats van <p> voor betere uitlijning
-                                        <div key={index}>{spec.specName} : {spec.value}</div>
-                                    ))
-                                ) : (<div>Niet beschikbaar</div>)}
-                                <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700"/>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <br/>
-            <Link href="/addDevice">
-            <Button color="primary">
-                Apparaat toevoegen
-            </Button>
-            </Link>
-        </div>
+        <Table
+            aria-label='Apparaten Tabel'
+            topContent={topContent}
+            color={"primary"}
+            selectionMode={"multiple"}
+            topContentPlacement='outside'
+            bottomContent={
+                <div className='flex w-full justify-center'>
+                    <Pagination
+                        isCompact
+                        showControls
+                        showShadow
+                        color='secondary'
+                        page={page}
+                        total={pages}
+                        onChange={(page) => setPage(page)}
+                    />
+                </div>
+            }
+            bottomContentPlacement='outside'
+            sortDescriptor={sortDescriptor}
+            onSortChange={setSortDescriptor}
+            classNames={{
+                wrapper: 'min-h-[222px]'
+            }}
+        >
+            <TableHeader>
+                <TableColumn allowsSorting key="type">Type</TableColumn>
+                <TableColumn allowsSorting key="brandName">Merk naam</TableColumn>
+                <TableColumn allowsSorting key="model">Model</TableColumn>
+                <TableColumn allowsSorting key="serialNumber">Serienummer</TableColumn>
+                <TableColumn allowsSorting key="invoiceNumber">Factuurnummer</TableColumn>
+                <TableColumn allowsSorting key="locationName">Locatie naam</TableColumn>
+                <TableColumn allowsSorting key="locationCity">Locatie Stad</TableColumn>
+                <TableColumn>Specifications</TableColumn>
+            </TableHeader>
+            <TableBody items={sortedItems} emptyContent={'No users to display.'}>
+                {sortedItems.map(item => (
+                    <TableRow key={item.id}>
+                        <TableCell className="align-top whitespace-pre-wrap">{item.type}</TableCell>
+                        <TableCell className="align-top whitespace-pre-wrap">{item.brandName}</TableCell>
+                        <TableCell className="align-top whitespace-pre-wrap">{item.model}</TableCell>
+                        <TableCell className="align-top whitespace-pre-wrap">{item.serialNumber}</TableCell>
+                        <TableCell className="align-top whitespace-pre-wrap">{item.invoiceNumber}</TableCell>
+                        <TableCell className="align-top whitespace-pre-wrap">{item.locationName}</TableCell>
+                        <TableCell className="align-top whitespace-pre-wrap">{item.locationCity}</TableCell>
+                        <TableCell >
+                            {item.specs && item.specs.length > 0 ? (item.specs.map((spec, index) => (
+                                         <div key={index}>{spec.specName} : {spec.value}</div>
+                                     ))
+                                 ) : (<div>Niet beschikbaar</div>)}
+                                 <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700"/>
+                             </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
     );
-};
+}
+
+
+
+
+//     return (
+//         <div>
+//             <Table
+//                 aria-label="Dummy Data Table"
+//                 color={"primary"}
+//                 selectionMode={"multiple"}
+//                 onSortChange={sort}
+//                 sortDescriptor={sort}
+//                 bottomContent = {
+//                     <div className="">
+//                         <Pagination
+//                             isCompact
+//                             showControls
+//                             showShadow
+//                             color="secondary"
+//                             page={currentPageNumber}
+//                             total={amountOfPages}
+//                             onChange={(page) => props.setPage(page)}
+//                         />
+//                     </div>}
+//                 classNames={{wrapper: "min-h-[222px]"}}
+//             >
+//                 <TableHeader>
+//                     <TableColumn allowsSorting key="type">Type</TableColumn>
+//                     <TableColumn allowsSorting key="brandName">Merk naam</TableColumn>
+//                     <TableColumn allowsSorting key="model">Model</TableColumn>
+//                     <TableColumn allowsSorting key="serialNumber">Serienummer</TableColumn>
+//                     <TableColumn allowsSorting key="invoiceNumber">Factuurnummer</TableColumn>
+//                     <TableColumn allowsSorting key="locationName">Locatie naam</TableColumn>
+//                     <TableColumn allowsSorting key="locationCity">Locatie Stad</TableColumn>
+//                     <TableColumn>Specifications</TableColumn>
+//                 </TableHeader>
+//                 <TableBody emptyContent={"Geen rijen om weer te geven"}>
+//                     {loading ? renderSkeleton(rowsPerPage) : dummyData.map((dummy, index) => (
+//                         // eslint-disable-next-line react/jsx-key
+//                         <TableRow>
+//                             <TableCell className="align-top whitespace-pre-wrap">{dummy.type}</TableCell>
+//                             <TableCell className="align-top whitespace-pre-wrap">{dummy.brandName}</TableCell>
+//                             <TableCell className="align-top whitespace-pre-wrap">{dummy.model}</TableCell>
+//                             <TableCell className="align-top whitespace-pre-wrap">{dummy.serialNumber}</TableCell>
+//                             <TableCell className="align-top whitespace-pre-wrap">{dummy.invoiceNumber}</TableCell>
+//                             <TableCell className="align-top whitespace-pre-wrap">{dummy.locationName}</TableCell>
+//                             <TableCell className="align-top whitespace-pre-wrap">{dummy.locationCity}</TableCell>
+//                             {/* Gebruik aangepaste stijlen voor de laatste cel */}
+//                             <TableCell>
+//                                 {dummy.specs && dummy.specs.length > 0 ? (
+//                                     dummy.specs.map((spec, index) => (
+//                                         // Gebruik een <div> in plaats van <p> voor betere uitlijning
+//                                         <div key={index}>{spec.specName} : {spec.value}</div>
+//                                     ))
+//                                 ) : (<div>Niet beschikbaar</div>)}
+//                                 <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700"/>
+//                             </TableCell>
+//                         </TableRow>
+//                     ))}
+//                 </TableBody>
+//             </Table>
+//             <br/>
+//             <Link href="/addDevice">
+//             <Button color="primary">
+//                 Apparaat toevoegen
+//             </Button>
+//             </Link>
+//         </div>
+//     );
+// };
