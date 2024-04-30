@@ -10,9 +10,12 @@ import { Table } from "@nextui-org/react";
  * @returns {Element} the Table component
  */
 const TableComponent = (props) => {
+
     return (
         <Table
             aria-label="Dummy Data Table"
+            color={"primary"}
+            selectionMode={"multiple"}
             bottomContent = {
                 <div className="">
                     <Pagination

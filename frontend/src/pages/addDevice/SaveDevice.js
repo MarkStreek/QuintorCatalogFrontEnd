@@ -1,7 +1,7 @@
 /*
 Translation map for the keys of the device data.
  */
-const translationMap = {
+export const translationMap = {
     Type: "type",
     Merknaam: "brandName",
     Model: "model",
@@ -25,10 +25,17 @@ export default async function POSTnewDevice(DeviceData) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(translatedData)
     };
-    let response = await fetch('http://localhost:8080/devices', requestOptions)
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+        let response = await fetch('http://localhost:8080/devices', requestOptions)
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        alert(error);
     }
+
+
 }
 
 /**
@@ -39,7 +46,7 @@ export default async function POSTnewDevice(DeviceData) {
  * @param translationMap object with the translation map
  * @returns translatedObj object with translated keys
  */
-function translateKeys(obj, translationMap) {
+export function translateKeys(obj, translationMap) {
     const translatedObj = {};
     for (const key in obj) {
         if (obj.hasOwnProperty(key)) {

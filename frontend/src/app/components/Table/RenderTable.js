@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {TableHeader, TableBody, TableColumn, Button} from "@nextui-org/react";
-import TableComponent from './CreateTable.js';
+import {TableHeader, TableBody, TableColumn, Button, Pagination, Table, TableRow, TableCell, SortDescriptor} from "@nextui-org/react";
 import renderSkeleton from "@/app/components/Table/RenderSkeleton";
-import renderData from "@/app/components/Table/RenderData";
 import Link from "next/link";
+import {useAsyncList} from "@react-stately/data";
 
 /**
  * Function that creates the dummy data table and returns it.
@@ -42,26 +41,69 @@ export default function DummyDataTable({data, loading}) {
         - If the loading is true, the function returns a skeleton data.
         - If the loading is false, the function returns the actual data.
      */
+
+
+    async function sort(items, sortDescriptor) {
+        console.log(items, sortDescriptor);
+    }
+
     return (
         <div>
-            <TableComponent
-                currentPage={currentPageNumber}
-                setPage={setCurrentPageNumber}
-                amountOfPages={amountOfPages}>
+            <Table
+                aria-label="Dummy Data Table"
+                color={"primary"}
+                selectionMode={"multiple"}
+                onSortChange={sort}
+                sortDescriptor={sort}
+                bottomContent = {
+                    <div className="">
+                        <Pagination
+                            isCompact
+                            showControls
+                            showShadow
+                            color="secondary"
+                            page={currentPageNumber}
+                            total={amountOfPages}
+                            onChange={(page) => props.setPage(page)}
+                        />
+                    </div>}
+                classNames={{wrapper: "min-h-[222px]"}}
+            >
                 <TableHeader>
-                    <TableColumn>Type</TableColumn>
-                    <TableColumn>Merk naam</TableColumn>
-                    <TableColumn>Model</TableColumn>
-                    <TableColumn>Serienummer</TableColumn>
-                    <TableColumn>Factuurnummer</TableColumn>
-                    <TableColumn>Locatie naam</TableColumn>
-                    <TableColumn>Locatie Stad</TableColumn>
+                    <TableColumn allowsSorting key="type">Type</TableColumn>
+                    <TableColumn allowsSorting key="brandName">Merk naam</TableColumn>
+                    <TableColumn allowsSorting key="model">Model</TableColumn>
+                    <TableColumn allowsSorting key="serialNumber">Serienummer</TableColumn>
+                    <TableColumn allowsSorting key="invoiceNumber">Factuurnummer</TableColumn>
+                    <TableColumn allowsSorting key="locationName">Locatie naam</TableColumn>
+                    <TableColumn allowsSorting key="locationCity">Locatie Stad</TableColumn>
                     <TableColumn>Specifications</TableColumn>
                 </TableHeader>
                 <TableBody emptyContent={"Geen rijen om weer te geven"}>
-                    {loading ? renderSkeleton(rowsPerPage) : renderData(dummyData)}
+                    {loading ? renderSkeleton(rowsPerPage) : dummyData.map((dummy, index) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <TableRow>
+                            <TableCell className="align-top whitespace-pre-wrap">{dummy.type}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{dummy.brandName}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{dummy.model}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{dummy.serialNumber}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{dummy.invoiceNumber}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{dummy.locationName}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{dummy.locationCity}</TableCell>
+                            {/* Gebruik aangepaste stijlen voor de laatste cel */}
+                            <TableCell>
+                                {dummy.specs && dummy.specs.length > 0 ? (
+                                    dummy.specs.map((spec, index) => (
+                                        // Gebruik een <div> in plaats van <p> voor betere uitlijning
+                                        <div key={index}>{spec.specName} : {spec.value}</div>
+                                    ))
+                                ) : (<div>Niet beschikbaar</div>)}
+                                <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700"/>
+                            </TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
-            </TableComponent>
+            </Table>
             <br/>
             <Link href="/addDevice">
             <Button color="primary">
