@@ -43,16 +43,21 @@ export default function DummyDataTable({data, loading}) {
         return filteredDevices;
     }, [data, filterValue, hasSearchFilter]);
 
-    const rowsPerPage = 4;
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(1);
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
+
+    const onRowsPerPageChange = React.useCallback((e) => {
+        setRowsPerPage(Number(e.target.value));
+        setPage(1);
+    }, []);
 
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
 
         return filteredItems.slice(start, end);
-    }, [page, filteredItems]);
+    }, [page, rowsPerPage, filteredItems]);
 
     const [sortDescriptor, setSortDescriptor] = useState({
         column: 'name',
@@ -91,11 +96,24 @@ export default function DummyDataTable({data, loading}) {
                         isClearable
                         className='w-full sm:max-w-[44%]'
                         placeholder='Zoek op modelnaam...'
-                        startContent={<FaSearch />}
+                        startContent={<FaSearch/>}
                         value={filterValue}
                         onClear={() => onClear()}
                         onValueChange={onSearchChange}
                     />
+                </div>
+                <div className="flex justify-between items-center">
+                    <label className="flex items-center text-default-400 text-small">
+                        Rows per page:
+                        <select
+                            className="bg-transparent outline-none text-default-400 text-small"
+                            onChange={onRowsPerPageChange}
+                        >
+                            <option value="3">3</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </label>
                 </div>
             </div>
         );
