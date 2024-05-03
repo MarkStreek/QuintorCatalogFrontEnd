@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import RootLayout from "../app/components/RootLayout/RootLayout";
 import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 /**
  * Function that returns the home page of the application.
@@ -10,8 +11,11 @@ import Link from "next/link";
 export default function Home() {
 
     const [search, setSearch] = useState("");
-    function handleSubmit() {
-        console.log(search);
+    const router = useRouter();
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        router.push(`/devices?search=${search}`).then();
     }
 
     return (
@@ -21,9 +25,12 @@ export default function Home() {
             <p className="text-2xl">Welkom, User</p>
             <br/>
             <p className="text-2xl">Snelle links:</p>
-            <div className="mt-2">
+            <div className="mt-2 flex gap-2">
                 <Button color="primary" size="large">
                     <Link href="/devices">Apparaten</Link>
+                </Button>
+                <Button color="primary" size="large">
+                    <Link href="/addDevice">Apparaat toevoegen</Link>
                 </Button>
             </div>
             <br/>
