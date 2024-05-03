@@ -17,7 +17,7 @@ import {useRouter} from "next/router";
 /**
  * Function that creates the dummy data table and returns it.
  */
-export default function DummyDataTable({data, loading}) {
+export default function DevicesTableComponent({data, loading}) {
 
     /*
     The state variables for the filter value and the search filter.

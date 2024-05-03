@@ -1,6 +1,6 @@
 import React from "react";
 import RootLayout from "@/app/components/RootLayout/RootLayout";
-import DummyDataTable from "@/app/components/Table/RenderTable";
+import DevicesTableComponent from "@/app/components/Table/RenderTable";
 import UseFetch from "@/hooks/UseFetch";
 
 /**
@@ -19,13 +19,13 @@ export default function devices() {
     const {data, loading, error} = UseFetch("http://localhost:8080/devices");
 
     // Return the RootLayout component,
-    // with the right data passed to the DummyDataTable component.
+    // with the right data passed to the DevicesTableComponent component.
     return (
         <RootLayout>
             <div>
                 <h1 className="text-5xl">Lijst van alle apparaten</h1>
                 <br/>
-                <DummyDataTable data={data} loading={loading} error={error}/>
+                <DevicesTableComponent data={data} loading={loading} error={error}/>
             </div>
         </RootLayout>
     )

@@ -1,10 +1,10 @@
-// __tests__/DummyDataTable.test.js
+// __tests__/DevicesTableComponent.test.js
 import React from 'react';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import {DummyDataTable} from '../components/DummyDataTable';
+import {DummyDataTable} from '../components/DevicesTableComponent';
 
-describe('DummyDataTable Component', () => {
+describe('DevicesTableComponent Component', () => {
   // Mock global fetch function
   beforeEach(() => {
     global.fetch = jest.fn();
