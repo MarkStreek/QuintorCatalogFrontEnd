@@ -40,6 +40,15 @@ export default function AddDevice() {
         specificaties: []
     };
 
+    const [message, setMessage] = useState(null);
+
+    function Notification({ message }) {
+        return (
+            <div className="fixed top-20 right-20 bg-green-500 text-white px-4 py-2 rounded shadow-md">
+                {message}
+            </div>
+        );
+    }
 
     const [values, setValues] = React.useState(new Set([]));
     const [DeviceData, setDeviceData] = useState(initialDeviceData);
@@ -55,26 +64,36 @@ export default function AddDevice() {
     // Call a function that fetches the specs from the API and updates the alreadyUsedSpecs state.
     new getAlreadyUsedSpecs(alreadyUsedSpecs, setAlreadyUsedSpecs);
 
-    function handleSubmit() {
+    const handleSubmit = () => {
         console.log('Submitting form...');
         const translatedData = translateKeys(DeviceData, translationMap);
         const requestOptions = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(translatedData)
         };
         fetch('http://localhost:8080/devices', requestOptions)
             .then(response => {
                 // Handle successful response
                 console.log('Response:', response);
+                setMessage('Apparaat succesvol toegevoegd!');
                 resetState();
+                // Verwijder de melding na 3 seconden
+                setTimeout(() => {
+                    setMessage(null);
+                }, 3000);
             })
             .catch(error => {
                 // Handle error
                 console.error('Error submitting form:', error);
+                setMessage('Er is een fout opgetreden bij het toevoegen van het apparaat.');
                 alert(error);
+                // Verwijder de melding na 3 seconden
+                setTimeout(() => {
+                    setMessage(null);
+                }, 3000);
             });
-    }
+    };
 
     return (
         <RootLayout>
@@ -113,6 +132,7 @@ export default function AddDevice() {
                     className="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Apparaat
                 opslaan
             </button>
+            {message && <Notification message={message} onClose={() => setMessage(null)} />}
             <button onClick={resetState}
                     className="mt-3 ml-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Velden leegmaken
             </button>
