@@ -74,21 +74,16 @@ export default function AddDevice() {
         };
         fetch('http://localhost:8080/devices', requestOptions)
             .then(response => {
-                // Handle successful response
-                console.log('Response:', response);
-                setMessage('Apparaat succesvol toegevoegd!');
+                return response.json();
+            }).then(function(response) {
+                setMessage(response.message);
                 resetState();
-                // Verwijder de melding na 3 seconden
                 setTimeout(() => {
                     setMessage(null);
                 }, 3000);
-            })
-            .catch(error => {
-                // Handle error
+            }).catch(error => {
                 console.error('Error submitting form:', error);
                 setMessage('Er is een fout opgetreden bij het toevoegen van het apparaat.');
-                alert(error);
-                // Verwijder de melding na 3 seconden
                 setTimeout(() => {
                     setMessage(null);
                 }, 3000);
