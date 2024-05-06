@@ -65,7 +65,7 @@ The hardware tools are stored in a database. This information is served to the f
 
 ## Getting Started
 
-Fill in...
+Will be released after finishing the application...
 
 ## Unit Tests
 
