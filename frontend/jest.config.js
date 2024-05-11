@@ -1,5 +1,5 @@
 module.exports = {
-  setupFilesAfterEnv: ['/Users/mvandestreek/Desktop/QuintorCatalogFrontEnd/frontend/jest.setup.js'],
+  setupFilesAfterEnv: ['./jest.setup.js'],
   testEnvironment: 'jsdom',
   collectCoverage: true,
   coverageProvider: 'v8',
@@ -17,6 +17,7 @@ module.exports = {
     '^.+\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',
     '^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i': '<rootDir>/__mocks__/fileMock.js',
     '^@/components/(.*)$': '<rootDir>/components/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
     '@next/font/(.*)': '<rootDir>/__mocks__/nextFontMock.js',
     'next/font/(.*)': '<rootDir>/__mocks__/nextFontMock.js',
   },
