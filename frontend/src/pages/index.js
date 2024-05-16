@@ -26,10 +26,10 @@ export default function Home() {
             <br/>
             <p className="text-2xl">Snelle links:</p>
             <div className="mt-2 flex gap-2">
-                <Button color="primary" size="large">
+                <Button className="bg-quintor-red text-white" size="large">
                     <Link href="/devices">Apparaten</Link>
                 </Button>
-                <Button color="primary" size="large">
+                <Button className="bg-quintor-red text-white" size="large">
                     <Link href="/addDevice">Apparaat toevoegen</Link>
                 </Button>
             </div>
@@ -46,7 +46,7 @@ export default function Home() {
                     className="h-12"
                     onChange={(event) => setSearch(event.target.value)}
                 />
-                <Button type="submit" color="primary" size="large" className="ml-2 h-12 w-28">Zoek</Button>
+                <Button type="submit" color="primary" size="large" className="bg-quintor-red text-white ml-2 h-12 w-28">Zoek</Button>
             </div>
             </form>
 

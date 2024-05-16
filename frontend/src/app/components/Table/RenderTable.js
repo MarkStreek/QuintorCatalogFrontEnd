@@ -253,7 +253,7 @@ export default function DevicesTableComponent({data, loading}) {
             </TableBody>
         </Table>
         <Link href="/addDevice">
-            <Button color="primary">
+            <Button className="bg-quintor-red text-white">
                 Apparaat toevoegen
             </Button>
         </Link>

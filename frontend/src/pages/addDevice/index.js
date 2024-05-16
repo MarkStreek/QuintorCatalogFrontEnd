@@ -76,11 +76,12 @@ export default function AddDevice() {
             .then(response => {
                 return response.json();
             }).then(function(response) {
+                console.log('Response:', response);
                 setMessage(response.message);
                 resetState();
                 setTimeout(() => {
                     setMessage(null);
-                }, 3000);
+                }, 4000);
             }).catch(error => {
                 console.error('Error submitting form:', error);
                 setMessage('Er is een fout opgetreden bij het toevoegen van het apparaat.');
@@ -124,12 +125,12 @@ export default function AddDevice() {
                 setValues={setValues}
             />
             <button onClick={handleSubmit}
-                    className="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Apparaat
+                    className="mt-3 text-white bg-quintor-red hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Apparaat
                 opslaan
             </button>
             {message && <Notification message={message} onClose={() => setMessage(null)} />}
             <button onClick={resetState}
-                    className="mt-3 ml-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Velden leegmaken
+                    className="mt-3 ml-3 text-white bg-quintor-red hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Velden leegmaken
             </button>
             <br/><br/>
             <hr className="w-full h-1 mx-auto my-8 bg-gray-300 border-0 rounded md:my-4 dark:bg-gray-700"/>
