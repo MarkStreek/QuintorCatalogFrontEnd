@@ -8,7 +8,11 @@ const config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "quintor-red": "#c23350",
+      }
+    },
     screens: {
       'xs': '275px',
       'sm': '640px',
