@@ -24,6 +24,10 @@ export default function Navbar() {
                               className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten toevoegen</Link>
                     </li>
                     <li>
+                        <Link href="/borrowedStatus"
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleenstatus</Link>
+                    </li>
+                    <li>
                         <Link href="/about"
                               className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Over</Link>
                     </li>
