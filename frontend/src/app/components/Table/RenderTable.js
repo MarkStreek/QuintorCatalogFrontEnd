@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useCallback, useEffect} from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
     TableHeader,
     TableBody,
@@ -7,32 +7,33 @@ import {
     Table,
     TableRow,
     TableCell,
-    Input, Button
+    Input,
+    Button
 } from "@nextui-org/react";
 
 import Link from "next/link";
-import {FaSearch} from "react-icons/fa";
-import {useRouter} from "next/router";
+import { FaSearch, FaRegEdit } from "react-icons/fa";
+import { useRouter } from "next/router";
+import DeviceModal from './DeviceModal'; // Import the DeviceModal component
 
 /**
- * Function that creates the dummy data table and returns it.
+ * DevicesTableComponent is a component that renders a table displaying a list of devices
+ * with sorting, filtering, and pagination capabilities. It also includes a modal for viewing
+ * and editing device details.
+ * 
+ * @param {Array} data - The array of device data to display.
+ * @param {boolean} loading - A boolean indicating whether the data is currently loading.
+ * @returns {JSX.Element} The DevicesTableComponent.
  */
-export default function DevicesTableComponent({data, loading}) {
-
-    /*
-    The state variables for the filter value and the search filter.
-    Also, the router is used to get the search query from the URL.
-     */
+export default function DevicesTableComponent({ data, loading }) {
     const [filterValue, setFilterValue] = useState('');
     const hasSearchFilter = Boolean(filterValue);
     const router = useRouter();
 
     /**
-     * This useMemo is the main function that handles the input of the search field.
-     * If the user types in the search field, the filterValue state is updated with the given value.
-     * And because the filterValue changes, this function is called and returns the filtered items.
-     *
-     * @returns {Array} the filtered items
+     * Filters the devices based on the search filter value.
+     * 
+     * @returns {Array} The filtered list of devices.
      */
     const filteredItems = useMemo(() => {
         let filteredDevices = [...data];
@@ -51,29 +52,24 @@ export default function DevicesTableComponent({data, loading}) {
         return filteredDevices;
     }, [data, filterValue, hasSearchFilter]);
 
-    /*
-    The state variables for the rows per page and the current page number.
-     */
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(1);
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
     /**
-     * This useCallback hook is used to handle the rows per page change event.
-     * The user can select the amount of rows per page in the select field.
-     * After selecting a new value, this function is called and updates the rows per page state.
-     * The page number is also reset to 1 when the rows per page change.
+     * Handles changing the number of rows per page.
+     * 
+     * @param {Event} e - The change event.
      */
-    const onRowsPerPageChange = React.useCallback((e) => {
+    const onRowsPerPageChange = useCallback((e) => {
         setRowsPerPage(Number(e.target.value));
         setPage(1);
     }, []);
 
-
     /**
-     * A useMemo hook to slice the items based on the current page and rows per page.
-     * If the page, rowsPerPage or filteredItems change, the items are sliced based on the new values.
-     * This memo is used in the TableBody component to render the right items on the right page.
+     * Paginates the filtered items.
+     * 
+     * @returns {Array} The paginated list of filtered items.
      */
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -82,22 +78,15 @@ export default function DevicesTableComponent({data, loading}) {
         return filteredItems.slice(start, end);
     }, [page, rowsPerPage, filteredItems]);
 
-
-    /**
-     * The sortDescriptor state variable.
-     * It contains the column to sort on and the direction of the sort.
-     */
     const [sortDescriptor, setSortDescriptor] = useState({
         column: 'name',
         direction: 'ascending'
     });
 
     /**
-     * This useMemo hook is used to sort the items based on the sort descriptor.
-     * The sort descriptor contains the column to sort on and the direction of the sort.
-     * If the sortDescriptor or items changes, the items are sorted using this hook.
-     * Items is a variable that contains the filtered items and the right slice of
-     * items (5, 10 or 15 per tablepage).
+     * Sorts the items based on the sort descriptor.
+     * 
+     * @returns {Array} The sorted list of items.
      */
     const sortedItems = useMemo(() => {
         return [...items].sort((a, b) => {
@@ -110,12 +99,9 @@ export default function DevicesTableComponent({data, loading}) {
     }, [sortDescriptor, items]);
 
     /**
-     * This useCallback hook is used to handle the search change event.
-     * When a user is typing in the search input, this function is called.
-     * It updates the search filter value with the given value. If the value is empty,
-     * the filter value is set to an empty string.
-     *
-     * @param value the search value
+     * Handles the search input change.
+     * 
+     * @param {string} value - The new search input value.
      */
     const onSearchChange = useCallback((value) => {
         if (value) {
@@ -127,23 +113,17 @@ export default function DevicesTableComponent({data, loading}) {
     }, []);
 
     /**
-     * This useEffect hook is called when the search query in the URL changes.
-     * If a user searches for a device in the homepage, the search query is added to the URL.
-     * Then, this effect comes in action and updates the search filter value with the given query.
-     * This way, the search filter value is updated when the user searches for a device.
+     * Sets the initial filter value based on the query parameter.
      */
     useEffect(() => {
         const searchQuery = router.query.search;
         if (searchQuery) {
             setFilterValue(searchQuery.toString());
         }
-
     }, [router.query.search]);
 
     /**
-     * Simple useCallback hook that is used to clear the search filter value and
-     * reset the page number to 1.
-     * This function is called when the user clicks on the clear button.
+     * Clears the search filter.
      */
     const onClear = useCallback(() => {
         setFilterValue('');
@@ -151,16 +131,9 @@ export default function DevicesTableComponent({data, loading}) {
     }, []);
 
     /**
-     * This useMemo hook is used to create the top content of the table.
-     * The memo hook is used to store the content in memory and only update it when:
-     *      - The filter value changes
-     *      - The onSearchChange function changes
-     *      - The onClear function changes
-     *      - The onRowsPerPageChange function changes
-     * The topContent is rendered at the top of the table and
-     * contains the search input field and rows per page select.
-     *
-     * The topContent is returned and used in the Table component (see return() below).
+     * Renders the top content including the search input and rows per page selector.
+     * 
+     * @returns {JSX.Element} The top content element.
      */
     const topContent = useMemo(() => {
         return (
@@ -170,7 +143,7 @@ export default function DevicesTableComponent({data, loading}) {
                         isClearable
                         className='w-full sm:max-w-[44%]'
                         placeholder='Zoek op modelnaam...'
-                        startContent={<FaSearch/>}
+                        startContent={<FaSearch />}
                         value={filterValue}
                         onClear={() => onClear()}
                         onValueChange={onSearchChange}
@@ -193,70 +166,118 @@ export default function DevicesTableComponent({data, loading}) {
         );
     }, [filterValue, onSearchChange, onRowsPerPageChange, onClear]);
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedDevice, setSelectedDevice] = useState(null);
+
+    /**
+     * Opens the modal for the selected device.
+     * 
+     * @param {Object} device - The selected device.
+     */
+    const openModal = (device) => {
+        console.log("Opening modal for device:", device); // Debugging log
+        setSelectedDevice(device);
+        setModalVisible(true);
+    };
+
+    /**
+     * Closes the modal.
+     */
+    const closeModal = () => {
+        console.log("Closing modal"); // Debugging log
+        setSelectedDevice(null);
+        setModalVisible(false);
+    };
+
+    /**
+     * Handles saving the edited device.
+     * 
+     * @param {Object} editedDevice - The edited device.
+     */
+    const handleSave = (editedDevice) => {
+        console.log("Saving edited device:", editedDevice);
+        // Find and update the device in the local state
+        const updatedData = data.map(device => device.id === editedDevice.id ? editedDevice : device);
+        setData(updatedData);
+    };
+
     return (
         <div>
             <Table
-            aria-label='Apparaten Tabel'
-            topContent={topContent}
-            color={"primary"}
-            selectionMode={"multiple"}
-            topContentPlacement='outside'
-            bottomContent={
-                <div className='flex w-full justify-center'>
-                    <Pagination
-                        isCompact
-                        showControls
-                        showShadow
-                        color='secondary'
-                        page={page}
-                        total={pages}
-                        onChange={(page) => setPage(page)}
-                    />
-                </div>
-            }
-            bottomContentPlacement='outside'
-            sortDescriptor={sortDescriptor}
-            onSortChange={setSortDescriptor}
-            classNames={{
-                wrapper: 'min-h-[222px]'
-            }}
-        >
-            <TableHeader>
-                <TableColumn allowsSorting key="type">Type</TableColumn>
-                <TableColumn allowsSorting key="brandName">Merk naam</TableColumn>
-                <TableColumn allowsSorting key="model">Model</TableColumn>
-                <TableColumn allowsSorting key="serialNumber">Serienummer</TableColumn>
-                <TableColumn allowsSorting key="invoiceNumber">Factuurnummer</TableColumn>
-                <TableColumn allowsSorting key="locationName">Locatie naam</TableColumn>
-                <TableColumn allowsSorting key="locationCity">Locatie Stad</TableColumn>
-                <TableColumn>Specifications</TableColumn>
-            </TableHeader>
-            <TableBody items={sortedItems} emptyContent={'Er zijn geen apparaten gevonden'}>
-                {sortedItems.map(item => (
-                    <TableRow key={item.id}>
-                        <TableCell className="align-top whitespace-pre-wrap">{item.type}</TableCell>
-                        <TableCell className="align-top whitespace-pre-wrap">{item.brandName}</TableCell>
-                        <TableCell className="align-top whitespace-pre-wrap">{item.model}</TableCell>
-                        <TableCell className="align-top whitespace-pre-wrap">{item.serialNumber}</TableCell>
-                        <TableCell className="align-top whitespace-pre-wrap">{item.invoiceNumber}</TableCell>
-                        <TableCell className="align-top whitespace-pre-wrap">{item.locationName}</TableCell>
-                        <TableCell className="align-top whitespace-pre-wrap">{item.locationCity}</TableCell>
-                        <TableCell >
-                            {item.specs && item.specs.length > 0 ? (item.specs.map((spec, index) => (
-                                         <div key={index}>{spec.specName} : {spec.value}</div>
-                                     ))
-                                 ) : (<div>Niet beschikbaar</div>)}
-                                 <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700"/>
-                             </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
-        <Link href="/addDevice">
-            <Button className="bg-quintor-red text-white">
-                Apparaat toevoegen
-            </Button>
-        </Link>
-    </div>
+                aria-label='Apparaten Tabel'
+                topContent={topContent}
+                color={"primary"}
+                selectionMode={"multiple"}
+                topContentPlacement='outside'
+                bottomContent={
+                    <div className='flex w-full justify-center'>
+                        <Pagination
+                            isCompact
+                            showControls
+                            showShadow
+                            color='secondary'
+                            page={page}
+                            total={pages}
+                            onChange={(page) => setPage(page)}
+                        />
+                    </div>
+                }
+                bottomContentPlacement='outside'
+                sortDescriptor={sortDescriptor}
+                onSortChange={setSortDescriptor}
+                classNames={{
+                    wrapper: 'min-h-[222px]'
+                }}
+            >
+                <TableHeader>
+                    <TableColumn allowsSorting key="type">Type</TableColumn>
+                    <TableColumn allowsSorting key="brandName">Merk naam</TableColumn>
+                    <TableColumn allowsSorting key="model">Model</TableColumn>
+                    <TableColumn allowsSorting key="serialNumber">Serienummer</TableColumn>
+                    <TableColumn allowsSorting key="invoiceNumber">Factuurnummer</TableColumn>
+                    <TableColumn allowsSorting key="locationName">Locatie naam</TableColumn>
+                    <TableColumn allowsSorting key="locationCity">Locatie Stad</TableColumn>
+                    <TableColumn>Specifications</TableColumn>
+                    <TableColumn>Actions</TableColumn>
+                </TableHeader>
+                <TableBody items={sortedItems} emptyContent={'Er zijn geen apparaten gevonden'}>
+                    {sortedItems.map(item => (
+                        <TableRow key={item.id}>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.type}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.brandName}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.model}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.serialNumber}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.invoiceNumber}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.locationName}</TableCell>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.locationCity}</TableCell>
+                            <TableCell>
+                                {item.specs && item.specs.length > 0 ? (item.specs.map((spec, index) => (
+                                    <div key={index}>{spec.specName} : {spec.value}</div>
+                                ))
+                                ) : (<div>Niet beschikbaar</div>)}
+                                <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700" />
+                            </TableCell>
+                            <TableCell>
+                                <Button color="primary" onClick={() => openModal(item)}>
+                                    <FaRegEdit />
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            <Link href="/addDevice">
+                <Button color="primary">
+                    Apparaat toevoegen
+                </Button>
+            </Link>
+
+            <DeviceModal
+                device={selectedDevice}
+                isOpen={modalVisible}
+                onClose={closeModal}
+                onSave={handleSave}
+            />
+        </div>
     );
 }
