@@ -5,14 +5,16 @@ import { updateDevice } from '../../../pages/updateDevice/UpdateDevice'; // Corr
 
 /**
  * DeviceModal is a component for editing and viewing device details in a modal.
- * 
+ *
  * @param {Object} device - The device object to edit.
  * @param {boolean} isOpen - A boolean indicating whether the modal is open.
  * @param {Function} onClose - Function to call when closing the modal.
  * @param {Function} onSave - Function to call when saving the edited device.
+ * @param setMessage - Function to set a message.
+ * @param setIsError - Function to set an error.
  * @returns {JSX.Element|null} The DeviceModal component.
  */
-const DeviceModal = ({ device, isOpen, onClose, onSave }) => {
+const DeviceModal = ({ device, isOpen, onClose, onSave, setMessage, setIsError }) => {
     const [editedDevice, setEditedDevice] = useState(device);
 
     /**
@@ -54,7 +56,7 @@ const DeviceModal = ({ device, isOpen, onClose, onSave }) => {
      */
     const handleSave = async () => {
         try {
-            await updateDevice(editedDevice); // Save the updated device
+            await updateDevice(editedDevice, setMessage, setIsError); // Save the updated device
             onSave(editedDevice); // Call the onSave callback
             onClose(); // Close the modal
         } catch (error) {

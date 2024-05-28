@@ -8,10 +8,10 @@
 */
 
 import React, {useState} from "react";
-import {Input, Select, SelectItem} from '@nextui-org/react';
+import {Input} from '@nextui-org/react';
 import RootLayout from "@/app/components/RootLayout/RootLayout";
 import UseFetch from "@/hooks/UseFetch";
-import POSTnewDevice, {translateKeys, translationMap} from "@/pages/addDevice/SaveDevice";
+import {translateKeys, translationMap} from "@/pages/addDevice/SaveDevice";
 import Selector from "@/pages/addDevice/CreateSpecificationInput";
 import AddNewSpecification from "@/pages/addDevice/AddNewSpecification";
 
@@ -26,6 +26,7 @@ export default function AddDevice() {
 
     // REACT STATE To store the already used specs
     const [alreadyUsedSpecs, setAlreadyUsedSpecs] = useState([]);
+    const [isError, setIsError] = useState(false); // Add this state
 
     // REACT STATE To store the device data
     const initialDeviceData = {
@@ -43,8 +44,11 @@ export default function AddDevice() {
     const [message, setMessage] = useState(null);
 
     function Notification({ message }) {
+
+        const messageClass = isError ? "bg-red-500" : "bg-green-500";
+
         return (
-            <div className="fixed top-20 right-20 bg-green-500 text-white px-4 py-2 rounded shadow-md">
+            <div className={`fixed top-20 right-20 text-white px-4 py-2 rounded shadow-md ${messageClass}`}>
                 {message}
             </div>
         );
@@ -77,6 +81,11 @@ export default function AddDevice() {
                 return response.json();
             }).then(function(response) {
                 console.log('Response:', response);
+                if (response.statusCode === 200) {
+                    setIsError(false);
+                } else {
+                    setIsError(true);
+                }
                 setMessage(response.message);
                 resetState();
                 setTimeout(() => {

@@ -1,19 +1,20 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
-    TableHeader,
-    TableBody,
-    TableColumn,
+    Button,
+    Input,
     Pagination,
     Table,
-    TableRow,
+    TableBody,
     TableCell,
-    Input,
-    Button
+    TableColumn,
+    TableHeader,
+    TableRow
 } from "@nextui-org/react";
 
 import Link from "next/link";
-import { FaSearch, FaRegEdit } from "react-icons/fa";
-import { useRouter } from "next/router";
+import {FaRegEdit, FaSearch} from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+import {useRouter} from "next/router";
 import DeviceModal from './DeviceModal'; // Import the DeviceModal component
 
 /**
@@ -197,12 +198,49 @@ export default function DevicesTableComponent({ data, loading }) {
     const handleSave = (editedDevice) => {
         console.log("Saving edited device:", editedDevice);
         // Find and update the device in the local state
-        const updatedData = data.map(device => device.id === editedDevice.id ? editedDevice : device);
-        setData(updatedData);
+        //setData(updatedData);
+        data = data.map(device => device.id === editedDevice.id ? editedDevice : device);
+    };
+
+    const [message, setMessage] = useState(null);
+
+    const [isError, setIsError] = useState(false); // Add this state
+
+    function Notification({ message }) {
+
+        const messageClass = isError ? "bg-red-500" : "bg-green-500";
+
+        return (
+            <div className={`fixed top-20 right-20 text-white px-4 py-2 rounded shadow-md ${messageClass}`}>
+                {message}
+            </div>
+        );
+    }
+
+    const handleDelete = async (id) => {
+        if (window.confirm("Are you sure you want to delete this device?")) {
+            try {
+                // Replace with your delete request
+                let response = await fetch(`http://localhost:8080/devices/${id}`, {
+                    method: 'DELETE',
+                });
+                let responseJSON = await response.json();
+                if (responseJSON.statusCode === 200) {
+                    setIsError(false);
+                    setMessage(responseJSON.message);
+                } else {
+                    setIsError(true);
+                    setMessage(responseJSON.message);
+                }
+            } catch (error) {
+                console.error('Failed to delete device:', error);
+            }
+        }
     };
 
     return (
         <div>
+            {message && <Notification message={message} onClose={() => setMessage(null)} />}
             <Table
                 aria-label='Apparaten Tabel'
                 topContent={topContent}
@@ -258,8 +296,11 @@ export default function DevicesTableComponent({ data, loading }) {
                                 <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700" />
                             </TableCell>
                             <TableCell>
-                                <Button color="primary" onClick={() => openModal(item)}>
+                                <Button className="m-1 h-8 w-4" color="primary" onClick={() => openModal(item)}>
                                     <FaRegEdit />
+                                </Button>
+                                <Button className="m-1 h-8 w-4" color="danger" onClick={() => handleDelete(item.id)}>
+                                    <MdDeleteForever />
                                 </Button>
                             </TableCell>
                         </TableRow>
@@ -277,6 +318,8 @@ export default function DevicesTableComponent({ data, loading }) {
                 isOpen={modalVisible}
                 onClose={closeModal}
                 onSave={handleSave}
+                setMessage={setMessage}
+                setIsError={setIsError}
             />
         </div>
     );
