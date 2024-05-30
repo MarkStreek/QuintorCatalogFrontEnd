@@ -176,7 +176,6 @@ export default function DevicesTableComponent({ data, loading }) {
      * @param {Object} device - The selected device.
      */
     const openModal = (device) => {
-        console.log("Opening modal for device:", device); // Debugging log
         setSelectedDevice(device);
         setModalVisible(true);
     };
@@ -185,7 +184,6 @@ export default function DevicesTableComponent({ data, loading }) {
      * Closes the modal.
      */
     const closeModal = () => {
-        console.log("Closing modal"); // Debugging log
         setSelectedDevice(null);
         setModalVisible(false);
     };

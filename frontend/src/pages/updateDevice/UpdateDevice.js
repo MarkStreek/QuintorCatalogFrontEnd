@@ -23,7 +23,6 @@ export const updateDevice = async (device, setMessage, setIsError) => {
 
         // Read the response as text
         const text = await response.json();
-        console.log("Backend response:", text); // Log the response
 
         if (text.statusCode === 200) {
             setIsError(false);
@@ -39,9 +38,6 @@ export const updateDevice = async (device, setMessage, setIsError) => {
         if (!response.ok) {
             throw new Error('Failed to update device'); // Throw an error if the response is not OK
         }
-
-        // Parse the response text as JSON
-        return JSON.parse(text); // Return the parsed JSON data
     } catch (error) {
         console.error('Error updating/saving the updated device:', error); // Log any errors
         throw error; // Rethrow the error to be handled by the caller
