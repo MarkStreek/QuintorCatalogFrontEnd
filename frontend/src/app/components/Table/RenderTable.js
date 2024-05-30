@@ -209,7 +209,7 @@ export default function DevicesTableComponent({ data, loading }) {
         const messageClass = isError ? "bg-red-500" : "bg-green-500";
 
         return (
-            <div className={`fixed top-20 right-20 text-white px-4 py-2 rounded shadow-md ${messageClass}`}>
+            <div className={`fixed bottom-40 right-20 text-white px-6 py-3 text-lg rounded shadow-md ${messageClass}`} style={{zIndex: 9999}}>
                 {message}
             </div>
         );
