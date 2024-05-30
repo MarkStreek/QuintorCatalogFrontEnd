@@ -11,7 +11,7 @@ import Link from "next/link";
  */
 export default function Sidebar() {
     return (
-        <div className="h-screen bg-quintor-red text-gray-800 w-48 space-y-6 py-7 px-2 fixed inset-y-0 left-0 overflow-auto">
+        <div className="h-screen bg-quintor-red text-gray-300 w-48 space-y-6 py-7 px-2 fixed inset-y-0 left-0 overflow-auto">
             <div className="flex items-center space-x-4">
                 <Link href="/"><span className="text-2xl font-extrabold">Quintor Catalogus</span></Link>
             </div>
@@ -19,15 +19,15 @@ export default function Sidebar() {
                 <ul className="space-y-3">
                     <li>
                         <Link href="/"
-                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Home</Link>
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Home</Link>
                     </li>
                     <li>
                         <Link href="/devices"
-                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten</Link>
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten</Link>
                     </li>
                     <li>
                         <Link href="/addDevice"
-                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten toevoegen</Link>
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten toevoegen</Link>
                     </li>
                     <li>
                         <Link href="/borrowedStatus"
@@ -35,7 +35,7 @@ export default function Sidebar() {
                     </li>
                     <li>
                         <Link href="/about"
-                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Over</Link>
+                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Over</Link>
                     </li>
                 </ul>
             </nav>
