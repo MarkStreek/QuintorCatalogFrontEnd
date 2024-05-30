@@ -30,8 +30,12 @@ export default function Sidebar() {
                               className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten toevoegen</Link>
                     </li>
                     <li>
+                        <Link href="/borrowedRequest"
+                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleen verzoek</Link>
+                    </li>
+                    <li>
                         <Link href="/borrowedStatus"
-                              className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleenstatus</Link>
+                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleenstatus</Link>
                     </li>
                     <li>
                         <Link href="/about"
