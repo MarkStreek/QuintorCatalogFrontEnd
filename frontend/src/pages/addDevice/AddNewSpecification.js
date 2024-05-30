@@ -3,7 +3,7 @@ This file contains the main functionality of the AddNewSpecification component.
 The function AddNewSpecification is the main function that renders the AddNewSpecification component.
  */
 
-import {Input} from "@nextui-org/react";
+import {Input, Select, SelectItem} from "@nextui-org/react";
 import React, {useState} from "react";
 
 
@@ -23,39 +23,54 @@ import React, {useState} from "react";
  */
 export default function AddNewSpecification({alreadyUsedSpecs, setAlreadyUsedSpecs}) {
 
-    // REACT STATE To store the new spec that needs to be added to the alreadyUsedSpecs
-    const [addNewSpec, setAddNewSpec] = useState({name: "", dataType: ""});
+    // REACT STATES To store the new spec that needs to be added to the alreadyUsedSpecs
+    const [value, setValue] = useState(new Set([]));
+    const [name, setName] = useState("");
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 md:break-after-auto">
             <Input
                 size="md"
+                value={name}
                 type="text"
                 variant="bordered"
                 label="Specificatie naam"
                 placeholder={"b.v. Schermgrootte, RAM"}
-                onChange={(e) => setAddNewSpec({...addNewSpec, ["name"]: e.target.value})}
+                onChange={(e) => {setName(e.target.value);}}
                 className="p-3 relative z-0"
             />
-            <Input
+            <Select
                 size="md"
-                type="text"
+                value={value}
+                selectedKeys={value}
                 variant="bordered"
                 label="Specificatie type"
                 placeholder={"b.v. String, int, boolean"}
-                onChange={(e) => setAddNewSpec({...addNewSpec, ["dataType"]: e.target.value})}
+                onSelectionChange={setValue}
                 className="p-3 relative z-0"
-            />
+            >
+                <SelectItem key="varchar" value="varchar">Varchar</SelectItem>
+                <SelectItem key="boolean" value="boolean">Boolean</SelectItem>
+                <SelectItem key="int" value="int">Int</SelectItem>
+                <SelectItem key="float" value="float">Float</SelectItem>
+                <SelectItem key="date" value="date">Date</SelectItem>
+                <SelectItem key="time" value="time">Time</SelectItem>
+                <SelectItem key="datetime" value="datetime">DateTime</SelectItem>
+                <SelectItem key="timestamp" value="timestamp">Timestamp</SelectItem>
+            </Select>
             <Input
                 className="w-44 ml-3"
                 type={"submit"}
                 value={"Specificatie toevoegen"}
                 onClick={() => {
-                    if (!alreadyUsedSpecs.some(spec => spec.specName === addNewSpec.name)) {
+                    if (!alreadyUsedSpecs.some(spec => spec.specName === name)) {
                         setAlreadyUsedSpecs([...alreadyUsedSpecs, {
-                            specName: addNewSpec.name,
-                            dataType: addNewSpec.dataType
+                            specName: name,
+                            dataType: Array.from(value).join(", ")
                         }]);
+                        // Reset the addNewSpec state
+                        setName("");
+                        setValue(new Set([]));
                     }
                 }}
             >
