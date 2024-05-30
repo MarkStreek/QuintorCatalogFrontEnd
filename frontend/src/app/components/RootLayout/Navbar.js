@@ -29,7 +29,7 @@ export default function Navbar() {
                     </li>
                     <li>
                         <Link href="/borrowedStatus"
-                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleenstatus</Link>
+                              className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleen status</Link>
                     </li>
                     <li>
                         <Link href="/about"

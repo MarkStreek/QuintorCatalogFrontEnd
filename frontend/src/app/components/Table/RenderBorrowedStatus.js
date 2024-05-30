@@ -14,6 +14,7 @@ import { FaSearch } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { format } from 'date-fns';
 import BorrowedStatusModal from './BorrowedStatusModal';
+import { MdClose } from 'react-icons/md';
 
 /**
  * BorrowedStatusTableComponent is a component that renders a table displaying a list of borrowed statuses
@@ -29,6 +30,21 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const hasSearchFilter = Boolean(filterValue);
     const router = useRouter();
+
+    const [message, setMessage] = useState(null);
+    const [isError, setIsError] = useState(false);
+
+    const Notification = ({ message, onClose }) => {
+        const messageClass = isError ? "bg-red-500" : "bg-green-500";
+        return (
+            <div className={`fixed top-20 right-20 text-white px-6 py-3 text-lg rounded shadow-md ${messageClass}`} style={{ zIndex: 9999 }}>
+                {message}
+                <button onClick={onClose} className="ml-4 text-2xl leading-none">
+                    <MdClose />
+                </button>
+            </div>
+        );
+    };
 
     const openModal = (status) => {
         setSelectedStatus(status);
@@ -47,35 +63,32 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
             });
 
             if (response.ok) {
-                alert('Request approved successfully');
+                setIsError(false);
+                setMessage('Verzoek goedgekeurd');
                 closeModal();
-                router.reload(); // Reload the page to reflect changes
+                router.reload();
             } else {
-                alert('Failed to approve request');
+                setIsError(true);
+                setMessage('Verzoek afgekeurd');
             }
         } catch (error) {
+            setIsError(true);
+            setMessage('An error occurred');
             console.error('Failed to approve request:', error);
-            alert('An error occurred');
         }
     };
 
     const handleReject = async (id) => {
         try {
-            // Implement the reject functionality as needed
             alert('Request rejected');
             closeModal();
-            // You may want to reload or update the state to reflect changes
         } catch (error) {
+            setIsError(true);
+            setMessage('An error occurred');
             console.error('Failed to reject request:', error);
-            alert('An error occurred');
         }
     };
 
-    /**
-     * Filters the borrowed statuses based on the search filter value.
-     * 
-     * @returns {Array} The filtered list of borrowed statuses.
-     */
     const filteredItems = useMemo(() => {
         let filteredStatuses = [...data];
         if (hasSearchFilter) {
@@ -87,7 +100,6 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
                 format(new Date(status.borrowDate), 'dd-MM-yyyy').toLowerCase().includes(filterValue.toLowerCase())
             );
         }
-
         return filteredStatuses;
     }, [data, filterValue, hasSearchFilter]);
 
@@ -95,25 +107,14 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
     const [page, setPage] = useState(1);
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
-    /**
-     * Handles changing the number of rows per page.
-     * 
-     * @param {Event} e - The change event.
-     */
     const onRowsPerPageChange = useCallback((e) => {
         setRowsPerPage(Number(e.target.value));
         setPage(1);
     }, []);
 
-    /**
-     * Paginates the filtered items.
-     * 
-     * @returns {Array} The paginated list of filtered items.
-     */
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-
         return filteredItems.slice(start, end);
     }, [page, rowsPerPage, filteredItems]);
 
@@ -122,26 +123,15 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
         direction: 'ascending'
     });
 
-    /**
-     * Sorts the items based on the sort descriptor.
-     * 
-     * @returns {Array} The sorted list of items.
-     */
     const sortedItems = useMemo(() => {
         return [...items].sort((a, b) => {
             const first = a[sortDescriptor.column];
             const second = b[sortDescriptor.column];
             const cmp = first < second ? -1 : first > second ? 1 : 0;
-
             return sortDescriptor.direction === 'descending' ? -cmp : cmp;
         });
     }, [sortDescriptor, items]);
 
-    /**
-     * Handles the search input change.
-     * 
-     * @param {string} value - The new search input value.
-     */
     const onSearchChange = useCallback((value) => {
         if (value) {
             setFilterValue(value);
@@ -151,9 +141,6 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
         }
     }, []);
 
-    /**
-     * Sets the initial filter value based on the query parameter.
-     */
     useEffect(() => {
         const searchQuery = router.query.search;
         if (searchQuery) {
@@ -161,19 +148,11 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
         }
     }, [router.query.search]);
 
-    /**
-     * Clears the search filter.
-     */
     const onClear = useCallback(() => {
         setFilterValue('');
         setPage(1);
     }, []);
 
-    /**
-     * Renders the top content including the search input and rows per page selector.
-     * 
-     * @returns {JSX.Element} The top content element.
-     */
     const topContent = useMemo(() => {
         return (
             <div className='flex flex-col gap-4'>
@@ -207,6 +186,7 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
 
     return (
         <div>
+            {message && <Notification message={message} onClose={() => setMessage(null)} />}
             <Table
                 aria-label='Borrowed Status Tabel'
                 topContent={topContent}

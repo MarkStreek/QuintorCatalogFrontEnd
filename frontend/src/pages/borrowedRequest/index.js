@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Card, Input, Textarea } from '@nextui-org/react';
 import RootLayout from "@/app/components/RootLayout/RootLayout";
 import UseFetch from '@/hooks/UseFetch';
+import { MdClose } from 'react-icons/md';
 
 const BorrowedRequest = () => {
     const { data: devices, loading: devicesLoading, error: devicesError } = UseFetch('http://localhost:8080/devices');
@@ -10,6 +11,19 @@ const BorrowedRequest = () => {
     const [deviceId, setDeviceId] = useState('');
     const [description, setDescription] = useState('');
     const [message, setMessage] = useState('');
+    const [isError, setIsError] = useState(false);
+
+    const Notification = ({ message, onClose }) => {
+        const messageClass = isError ? "bg-red-500" : "bg-green-500";
+        return (
+            <div className={`fixed top-20 right-20 text-white px-6 py-3 text-lg rounded shadow-md ${messageClass}`} style={{ zIndex: 9999 }}>
+                {message}
+                <button onClick={onClose} className="ml-4 text-2xl leading-none">
+                    <MdClose />
+                </button>
+            </div>
+        );
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -29,12 +43,15 @@ const BorrowedRequest = () => {
             });
 
             if (response.ok) {
+                setIsError(false);
                 setMessage('Apparaat succesvol uitgeleend');
             } else {
                 const errorData = await response.json();
+                setIsError(true);
                 setMessage(`Error: ${errorData.message}`);
             }
         } catch (error) {
+            setIsError(true);
             setMessage(`Error: ${error.message}`);
         }
     };
@@ -100,7 +117,7 @@ const BorrowedRequest = () => {
                             </Button>
                         </form>
                     )}
-                    {message && <p>{message}</p>}
+                    {message && <Notification message={message} onClose={() => setMessage(null)} />}
                 </Card>
             </div>
         </RootLayout>
