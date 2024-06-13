@@ -2,6 +2,7 @@ import React from "react";
 import RootLayout from "@/app/components/RootLayout/RootLayout";
 import BorrowedStatusTableComponent from "@/app/components/Table/RenderBorrowedStatus";
 import UseFetch from "@/hooks/UseFetch";
+import withAuth from "@/app/components/withAuth";
 
 /**
  * Function that returns the borrowed status page of the application.
@@ -10,7 +11,7 @@ import UseFetch from "@/hooks/UseFetch";
  *
  * @returns {Element} The borrowed status page
  */
-export default function BorrowedStatusPage() {
+const BorrowedStatusPage = () => {
     /*
     Call the custom fetch hook from the UseFetch.js file.
     The parameter is the URL to fetch data from.
@@ -38,4 +39,6 @@ export default function BorrowedStatusPage() {
             </div>
         </RootLayout>
     );
-}
+};
+
+export default withAuth(BorrowedStatusPage);

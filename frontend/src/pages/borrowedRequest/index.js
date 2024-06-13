@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Card, Input, Textarea } from '@nextui-org/react';
+import { Button, Card, Textarea } from '@nextui-org/react';
 import RootLayout from "@/app/components/RootLayout/RootLayout";
 import UseFetch from '@/hooks/UseFetch';
 import { MdClose } from 'react-icons/md';
+import withAuth from "@/app/components/withAuth";
 
+/**
+ * This component renders a form for submitting a borrowed device request.
+ * 
+ * @returns {JSX.Element} The BorrowedRequest component.
+ */
 const BorrowedRequest = () => {
     const { data: devices, loading: devicesLoading, error: devicesError } = UseFetch('http://localhost:8080/devices');
     const { data: users, loading: usersLoading, error: usersError } = UseFetch('http://localhost:8080/borrowedstatus/users');
@@ -33,11 +39,14 @@ const BorrowedRequest = () => {
             description,
         };
 
+        const token = localStorage.getItem('token'); // Get the token from localStorage
+
         try {
             const response = await fetch('http://localhost:8080/borrowedstatus', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Include the token in the headers
                 },
                 body: JSON.stringify(borrowRequest),
             });
@@ -124,4 +133,4 @@ const BorrowedRequest = () => {
     );
 };
 
-export default BorrowedRequest;
+export default withAuth(BorrowedRequest);

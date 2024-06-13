@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
     Input,
     Pagination,
@@ -24,7 +24,7 @@ import { MdClose } from 'react-icons/md';
  * @param {boolean} loading - A boolean indicating whether the data is currently loading.
  * @returns {JSX.Element} The BorrowedStatusTableComponent.
  */
-export default function BorrowedStatusTableComponent({ data = [], loading }) {
+const BorrowedStatusTableComponent = ({ data = [], loading }) => {
     const [filterValue, setFilterValue] = useState('');
     const [selectedStatus, setSelectedStatus] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -57,9 +57,14 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
     };
 
     const handleApprove = async (id) => {
+        const token = localStorage.getItem('token'); // Get the token from localStorage
+
         try {
             const response = await fetch(`http://localhost:8080/borrowedstatus/approve/${id}`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include the token in the headers
+                }
             });
 
             if (response.ok) {
@@ -79,9 +84,24 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
     };
 
     const handleReject = async (id) => {
+        const token = localStorage.getItem('token'); // Get the token from localStorage
         try {
-            alert('Request rejected');
-            closeModal();
+            const response = await fetch(`http://localhost:8080/borrowedstatus/reject/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include the token in the headers
+                }
+            });
+
+            if (response.ok) {
+                setIsError(false);
+                setMessage('Verzoek afgewezen');
+                closeModal();
+                router.reload();
+            } else {
+                setIsError(true);
+                setMessage('Verzoek niet afgewezen');
+            }
         } catch (error) {
             setIsError(true);
             setMessage('An error occurred');
@@ -245,4 +265,6 @@ export default function BorrowedStatusTableComponent({ data = [], loading }) {
             />
         </div>
     );
-}
+};
+
+export default BorrowedStatusTableComponent;

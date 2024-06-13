@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import { useState, useEffect } from 'react';
 
 /**
  * Custom React hook that fetches data from a given URL.
@@ -17,12 +17,16 @@ export default function UseFetch(url) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // useEffect hook to fetch data from the given URL
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
+            const token = localStorage.getItem('token');
             try {
-                let response = await fetch(url);
+                let response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
                 let data = await response.json();
                 // Set the data state to the fetched data
                 setData(data);
@@ -36,7 +40,7 @@ export default function UseFetch(url) {
 
         }
         void fetchData();
-    }, []);
+    }, [url]);
 
-    return {data, loading, error};
+    return { data, loading, error };
 }

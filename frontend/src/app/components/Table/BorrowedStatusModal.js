@@ -31,7 +31,7 @@ const BorrowedStatusModal = ({ isOpen, onClose, status, onApprove, onReject }) =
                         <hr />
                         <p><strong>Status:</strong> {status.status}</p>
                         <p><strong>Datum Uitgeleend:</strong> {format(new Date(status.borrowDate), 'dd-MM-yyyy')}</p>
-                        <p><strong>Omschrijving:</strong> Dit is een voorbeeld beschrijving.</p>
+                        <p><strong>Omschrijving:</strong> {status.description}</p>
                     </ModalBody>
                     <ModalFooter>
                         {status.status === 'Wachten op goedkeuring' && (

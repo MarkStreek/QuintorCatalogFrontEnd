@@ -1,7 +1,6 @@
-// src/components/DeviceModal.js
 import React, { useState, useEffect } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from "@nextui-org/react";
-import { updateDevice } from '../../../pages/updateDevice/UpdateDevice'; // Correct import
+import { updateDevice } from '../../../pages/updateDevice/UpdateDevice';
 
 /**
  * DeviceModal is a component for editing and viewing device details in a modal.

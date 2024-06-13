@@ -7,13 +7,14 @@
 *   - SaveDevice.js: The function that sends the device data to the API.
 */
 
-import React, {useState} from "react";
-import {Input} from '@nextui-org/react';
+import React, { useState } from "react";
+import { Input } from '@nextui-org/react';
 import RootLayout from "@/app/components/RootLayout/RootLayout";
 import UseFetch from "@/hooks/UseFetch";
-import {translateKeys, translationMap} from "@/pages/addDevice/SaveDevice";
+import { translateKeys, translationMap } from "@/pages/addDevice/SaveDevice";
 import Selector from "@/pages/addDevice/CreateSpecificationInput";
 import AddNewSpecification from "@/pages/addDevice/AddNewSpecification";
+import withAuth from "@/app/components/withAuth";
 
 /**
  * The main function of the addDevice page.
@@ -22,11 +23,10 @@ import AddNewSpecification from "@/pages/addDevice/AddNewSpecification";
  *
  * @returns {Element} the addDevice page
  */
-export default function AddDevice() {
-
+const AddDevice = () => {
     // REACT STATE To store the already used specs
     const [alreadyUsedSpecs, setAlreadyUsedSpecs] = useState([]);
-    const [isError, setIsError] = useState(false); // Add this state
+    const [isError, setIsError] = useState(false);
 
     // REACT STATE To store the device data
     const initialDeviceData = {
@@ -44,9 +44,7 @@ export default function AddDevice() {
     const [message, setMessage] = useState(null);
 
     function Notification({ message }) {
-
         const messageClass = isError ? "bg-red-500" : "bg-green-500";
-
         return (
             <div className={`fixed top-20 right-20 text-white px-4 py-2 rounded shadow-md ${messageClass}`}>
                 {message}
@@ -54,7 +52,7 @@ export default function AddDevice() {
         );
     }
 
-    const [values, setValues] = React.useState(new Set([]));
+    const [values, setValues] = useState(new Set([]));
     const [DeviceData, setDeviceData] = useState(initialDeviceData);
 
     const resetState = () => {
@@ -68,7 +66,7 @@ export default function AddDevice() {
     // Call a function that fetches the specs from the API and updates the alreadyUsedSpecs state.
     new getAlreadyUsedSpecs(alreadyUsedSpecs, setAlreadyUsedSpecs);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log('Submitting form...');
         const translatedData = translateKeys(DeviceData, translationMap);
         const requestOptions = {
@@ -76,28 +74,26 @@ export default function AddDevice() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(translatedData)
         };
-        fetch('http://localhost:8080/devices', requestOptions)
-            .then(response => {
-                return response.json();
-            }).then(function(response) {
-                console.log('Response:', response);
-                if (response.statusCode === 200) {
-                    setIsError(false);
-                } else {
-                    setIsError(true);
-                }
-                setMessage(response.message);
-                resetState();
-                setTimeout(() => {
-                    setMessage(null);
-                }, 4000);
-            }).catch(error => {
-                console.error('Error submitting form:', error);
-                setMessage('Er is een fout opgetreden bij het toevoegen van het apparaat.');
-                setTimeout(() => {
-                    setMessage(null);
-                }, 3000);
-            });
+        try {
+            const response = await fetch('http://localhost:8080/devices', requestOptions);
+            const data = await response.json();
+            if (response.ok) {
+                setIsError(false);
+            } else {
+                setIsError(true);
+            }
+            setMessage(data.message);
+            resetState();
+            setTimeout(() => {
+                setMessage(null);
+            }, 4000);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setMessage('Er is een fout opgetreden bij het toevoegen van het apparaat.');
+            setTimeout(() => {
+                setMessage(null);
+            }, 3000);
+        }
     };
 
     return (
@@ -150,7 +146,9 @@ export default function AddDevice() {
             />
         </RootLayout>
     );
-}
+};
+
+export default withAuth(AddDevice);
 
 /**
  * Function that fetches the specs from the API and updates the alreadyUsedSpecs state.
