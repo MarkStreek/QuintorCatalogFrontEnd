@@ -1,12 +1,44 @@
-import React from 'react';
+import React from "react";
+import RootLayout from "@/app/components/RootLayout/RootLayout";
+import BorrowedStatusTableComponent from "@/app/components/Table/RenderBorrowedStatus";
+import UseFetch from "@/hooks/UseFetch";
+import withAuth from "@/app/components/withAuth";
 
-function BorrowedStatus() {
+/**
+ * Function that returns the borrowed status page of the application.
+ * On this page, there is a Table with all the borrowed statuses.
+ * The statuses are fetched from the API using the custom UseFetch hook.
+ *
+ * @returns {Element} The borrowed status page
+ */
+const BorrowedStatusPage = () => {
+    /*
+    Call the custom fetch hook from the UseFetch.js file.
+    The parameter is the URL to fetch data from.
+    The REACT useStates: data, loading, and error are returned from fetch hook and defined.
+     */
+    const { data, loading, error } = UseFetch("http://localhost:8080/borrowedstatus");
+
+    // Transform the data if needed to handle the structure
+    const transformedData = data?.map(item => ({
+        id: item.id,
+        user: item.user,
+        device: item.device,
+        status: item.status,
+        borrowDate: item.borrowDate
+    })) || [];
+
+    // Return the RootLayout component,
+    // with the right data passed to the BorrowedStatusTableComponent component.
     return (
-        <div>
-            <h1>Borrowed Status Page</h1>
-            <p>Welcome to the Borrowed Status page!</p>
-        </div>
+        <RootLayout>
+            <div>
+                <h1 className="text-5xl">Lijst van alle uitgeleende apparaten</h1>
+                <br />
+                <BorrowedStatusTableComponent data={transformedData} loading={loading} error={error} />
+            </div>
+        </RootLayout>
     );
-}
+};
 
-export default BorrowedStatus;
+export default withAuth(BorrowedStatusPage);

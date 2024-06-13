@@ -1,5 +1,3 @@
-// src/pages/updateDevice/UpdateDevice.js
-
 /**
  * Updates a device by sending a PUT request to the backend.
  *
@@ -11,25 +9,27 @@
  * @throws Will throw an error if the update operation fails.
  */
 export const updateDevice = async (device, setMessage, setIsError) => {
+    const token = localStorage.getItem('token'); // Get the token from localStorage
     try {
         // Send a PUT request to the backend with the updated device data
         const response = await fetch(`http://localhost:8080/devices/${device.id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the headers
             },
             body: JSON.stringify(device)
         });
 
-        // Read the response as text
-        const text = await response.json();
+        // Read the response as JSON
+        const data = await response.json();
 
-        if (text.statusCode === 200) {
+        if (response.ok) {
             setIsError(false);
         } else {
             setIsError(true);
         }
-        setMessage(text.message);
+        setMessage(data.message);
         setTimeout(() => {
             setMessage(null);
         }, 4000);
