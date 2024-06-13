@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Input } from "@nextui-org/react";
 
+/**
+ * The LoginPage component renders the login form and handles the login process.
+ * It sends the login credentials to the backend and stores the token and email in local storage upon successful login.
+ * 
+ * @returns {JSX.Element} The LoginPage component.
+ */
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,6 +28,7 @@ const LoginPage = () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('email', email); // Store email in local storage
                 router.push('/'); // Redirect to the home page
             } else {
                 const errorData = await response.json();
