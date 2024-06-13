@@ -147,7 +147,6 @@ const AddDevice = () => {
                     );
                 })}
             </div>
-            <pre>{JSON.stringify(DeviceData, null, 2)}</pre>
             <hr className="w-full h-1 mx-auto my-4 bg-gray-300 border-0 rounded md:my-8 dark:bg-gray-700"/>
             <Selector
                 alreadyUsedSpecs={alreadyUsedSpecs}

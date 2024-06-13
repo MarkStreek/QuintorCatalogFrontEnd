@@ -71,9 +71,9 @@ export default function Navbar() {
                                 </Link>
                             </DropdownItem>
                             <DropdownItem key="logout">
-                                <div className="text-gray-800 px-2 py-3 rounded-md w-full cursor-pointer hover:bg-red-500" onClick={logout}>
+                                <Link href={""} className="text-gray-800 px-2 py-3 rounded-md w-full" onClick={logout}>
                                     Logout
-                                </div>
+                                </Link>
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>

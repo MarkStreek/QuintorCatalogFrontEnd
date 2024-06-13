@@ -28,7 +28,7 @@ export default function Sidebar() {
     };
 
     return (
-        <div className="h-screen bg-quintor-red text-gray-800 w-48 space-y-6 py-7 px-2 fixed inset-y-0 left-0 overflow-auto flex flex-col justify-between">
+        <div className="h-screen bg-quintor-red text-gray-300 w-48 space-y-6 py-7 px-2 fixed inset-y-0 left-0 overflow-auto flex flex-col justify-between">
             <div>
                 <div className="flex items-center space-x-4">
                     <Link href="/"><span className="text-2xl font-extrabold">Quintor Catalogus</span></Link>
@@ -36,22 +36,22 @@ export default function Sidebar() {
                 <nav>
                     <ul className="space-y-3 mt-6">
                         <li>
-                            <Link href="/" className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Home</Link>
+                            <Link href="/" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Home</Link>
                         </li>
                         <li>
-                            <Link href="/devices" className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten</Link>
+                            <Link href="/devices" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten</Link>
                         </li>
                         <li>
-                            <Link href="/addDevice" className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten toevoegen</Link>
+                            <Link href="/addDevice" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Apparaten toevoegen</Link>
                         </li>
                         <li>
-                            <Link href="/borrowedRequest" className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleen verzoek</Link>
+                            <Link href="/borrowedRequest" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleen verzoek</Link>
                         </li>
                         <li>
-                            <Link href="/borrowedStatus" className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleen status</Link>
+                            <Link href="/borrowedStatus" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleen status</Link>
                         </li>
                         <li>
-                            <Link href="/about" className="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Over</Link>
+                            <Link href="/about" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Over</Link>
                         </li>
                     </ul>
                 </nav>

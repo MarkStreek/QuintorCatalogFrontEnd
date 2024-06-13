@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Input } from "@nextui-org/react";
+import Image from 'next/image';
+import { IoMdMail } from "react-icons/io";
+import { TbPasswordFingerprint } from "react-icons/tb";
+
+
 
 /**
  * The LoginPage component renders the login form and handles the login process.
@@ -40,10 +45,17 @@ const LoginPage = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-            <form onSubmit={handleLogin} style={{ width: '300px' }}>
-                <h1>Login</h1>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className="flex flex-col justify-center items-center min-h-screen gap-4">
+            <div className="flex flex-col items-center justify-center w-1/2 gap-4">
+                <Image src="/logo.png" alt="Logo" width={300} height={300}/>
+                <p className="text-5xl font-semibold">Quintor Hardware catalogus</p>
+            </div>
+            <form onSubmit={handleLogin} className="w-1/2 p-4 border-2 border-quintor-red rounded shadow-lg bg-white">
+                <div className="flex gap-2 items-center justify-center">
+                <h1 className="text-3xl text-center text-quintor-red"><IoMdMail /></h1>
+                <h1 className="text-3xl text-center text-quintor-red"><TbPasswordFingerprint/></h1>
+                </div>
+                {error && <p style={{color: 'red'}}>{error}</p>}
                 <Input
                     type="email"
                     value={email}
@@ -51,6 +63,7 @@ const LoginPage = () => {
                     placeholder="Email"
                     fullWidth
                     required
+                    className="p-2 m-2"
                 />
                 <Input
                     type="password"
@@ -59,8 +72,9 @@ const LoginPage = () => {
                     placeholder="Password"
                     fullWidth
                     required
+                    className="p-2 m-2"
                 />
-                <Button type="submit" color="primary" fullWidth>
+                <Button type="submit" color="primary" className="p-4 m-2 w-full bg-quintor-red" fullWidth>
                     Login
                 </Button>
             </form>
