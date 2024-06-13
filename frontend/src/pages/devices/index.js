@@ -23,7 +23,7 @@ const DevicesPage = () => {
     // with the right data passed to the DevicesTableComponent component.
     return (
         <RootLayout>
-            <div>
+            <div className="md:mt-0 xs:mt-12 sm:mt-12">
                 <h1 className="text-5xl">Lijst van alle apparaten</h1>
                 <br />
                 <DevicesTableComponent data={data} loading={loading} error={error} />
