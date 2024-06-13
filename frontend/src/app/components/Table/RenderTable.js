@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
     Button,
     Input,
-    Pagination,
+    Pagination, Popover, PopoverContent, PopoverTrigger,
     Table,
     TableBody,
     TableCell,
@@ -15,7 +15,11 @@ import Link from "next/link";
 import {FaRegEdit, FaSearch} from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import {useRouter} from "next/router";
-import DeviceModal from './DeviceModal'; // Import the DeviceModal component
+import DeviceModal from './DeviceModal';
+import { FaInfoCircle } from "react-icons/fa";
+import { RiArrowDownDoubleFill } from "react-icons/ri";
+
+
 
 /**
  * DevicesTableComponent is a component that renders a table displaying a list of devices
@@ -275,6 +279,7 @@ export default function DevicesTableComponent({ data, loading }) {
                 }}
             >
                 <TableHeader>
+                    <TableColumn key="id">Id</TableColumn>
                     <TableColumn allowsSorting key="type">Type</TableColumn>
                     <TableColumn allowsSorting key="brandName">Merk naam</TableColumn>
                     <TableColumn allowsSorting key="model">Model</TableColumn>
@@ -288,6 +293,7 @@ export default function DevicesTableComponent({ data, loading }) {
                 <TableBody items={sortedItems} emptyContent={'Er zijn geen apparaten gevonden'}>
                     {sortedItems.map(item => (
                         <TableRow key={item.id}>
+                            <TableCell className="align-top whitespace-pre-wrap">{item.id}</TableCell>
                             <TableCell className="align-top whitespace-pre-wrap">{item.type}</TableCell>
                             <TableCell className="align-top whitespace-pre-wrap">{item.brandName}</TableCell>
                             <TableCell className="align-top whitespace-pre-wrap">{item.model}</TableCell>
@@ -295,15 +301,54 @@ export default function DevicesTableComponent({ data, loading }) {
                             <TableCell className="align-top whitespace-pre-wrap">{item.invoiceNumber}</TableCell>
                             <TableCell className="align-top whitespace-pre-wrap">{item.locationName}</TableCell>
                             <TableCell className="align-top whitespace-pre-wrap">{item.locationCity}</TableCell>
-                            <TableCell>
-                                {item.specs && item.specs.length > 0 ? (item.specs.map((spec, index) => (
-                                    <div key={index}>{spec.specName} : {spec.value}</div>
-                                ))
-                                ) : (<div>Niet beschikbaar</div>)}
-                                <hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700" />
+                            <TableCell className="align-top whitespace-pre-wrap w-full">
+                                {item.specs && item.specs.length > 0 ? (
+                                    <>
+                                        {item.specs.map((spec, index) => {
+                                            if (["OS", "storage", "RAM"].includes(spec.specName)) {
+                                                return (
+                                                    <div key={index} className="flex">
+                                                        <div className="mr-2">{spec.specName}:</div>
+                                                        <div className="font-bold">{spec.value}</div>
+                                                    </div>
+                                                );
+                                            }
+                                            return null;
+                                        })}
+                                        <Popover placement={"bottom-start"} triggerType={"grid"}>
+                                            <PopoverTrigger>
+                                                <div className="flex gap-2">
+                                                    Meer specs
+                                                    <RiArrowDownDoubleFill className="mt-1" />
+                                                </div>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                                <div className="grid grid-cols-2 gap-x-4">
+                                                    {item.specs.map((spec, index) => {
+                                                        if (!["OS", "storage", "RAM"].includes(spec.specName)) {
+                                                            return (
+                                                                <React.Fragment key={index}>
+                                                                    <div className="text-md text-left font-semibold">
+                                                                        {spec.specName}
+                                                                    </div>
+                                                                    <div className="text-md text-left">{spec.value}</div>
+                                                                </React.Fragment>
+                                                            );
+                                                        }
+                                                        return null;
+                                                    })}
+                                                </div>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </>
+                                ) : (
+                                    <div className="text-sm">Niet beschikbaar</div>
+                                )}
+                                {/*<hr className="w-full h-0.5 mx-auto m-2 bg-gray-300 border-0 rounded dark:bg-gray-700" />*/}
                             </TableCell>
+
                             <TableCell>
-                                <Button className="m-1 h-8 w-4" color="primary" onClick={() => openModal(item)}>
+                            <Button className="m-1 h-8 w-4" color="primary" onClick={() => openModal(item)}>
                                     <FaRegEdit />
                                 </Button>
                                 <Button className="m-1 h-8 w-4" color="danger" onClick={() => handleDelete(item.id)}>

@@ -18,10 +18,13 @@ import React, {useState} from "react";
  *
  * @param alreadyUsedSpecs
  * @param setAlreadyUsedSpecs
+ * @param setMessage
+ * @param resetState
+ * @param setIsError
  * @returns {Element}
  * @constructor
  */
-export default function AddNewSpecification({alreadyUsedSpecs, setAlreadyUsedSpecs}) {
+export default function AddNewSpecification({alreadyUsedSpecs, setAlreadyUsedSpecs, setMessage, resetState, setIsError}) {
 
     // REACT STATES To store the new spec that needs to be added to the alreadyUsedSpecs
     const [value, setValue] = useState(new Set([]));
@@ -49,14 +52,11 @@ export default function AddNewSpecification({alreadyUsedSpecs, setAlreadyUsedSpe
                 onSelectionChange={setValue}
                 className="p-3 relative z-0"
             >
-                <SelectItem key="varchar" value="varchar">Varchar</SelectItem>
+                <SelectItem key="tekst" value="tekst">Tekst</SelectItem>
                 <SelectItem key="boolean" value="boolean">Boolean</SelectItem>
-                <SelectItem key="int" value="int">Int</SelectItem>
-                <SelectItem key="float" value="float">Float</SelectItem>
-                <SelectItem key="date" value="date">Date</SelectItem>
-                <SelectItem key="time" value="time">Time</SelectItem>
-                <SelectItem key="datetime" value="datetime">DateTime</SelectItem>
-                <SelectItem key="timestamp" value="timestamp">Timestamp</SelectItem>
+                <SelectItem key="getal" value="getal">Getal</SelectItem>
+                <SelectItem key="datum" value="datum">Datum</SelectItem>
+                <SelectItem key="tijd" value="tijd">Tijd</SelectItem>
             </Select>
             <Input
                 className="w-44 ml-3"
@@ -69,8 +69,20 @@ export default function AddNewSpecification({alreadyUsedSpecs, setAlreadyUsedSpe
                             dataType: Array.from(value).join(", ")
                         }]);
                         // Reset the addNewSpec state
+                        setMessage("Niewe specificatie succesvol toegevoegd, nu vindbaar in de lijst met specificaties.");
+                        resetState();
+                        setTimeout(() => {
+                            setMessage(null);
+                        }, 4000);
                         setName("");
                         setValue(new Set([]));
+                    }
+                    else {
+                        setIsError(true);
+                        setMessage("De specificatie bestaat al, voer een andere specificatie in.");
+                        setTimeout(() => {
+                            setMessage(null);
+                        }, 4000);
                     }
                 }}
             >

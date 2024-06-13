@@ -8,7 +8,7 @@
 */
 
 import React, { useState } from "react";
-import { Input } from '@nextui-org/react';
+import {Input, Select, SelectItem} from '@nextui-org/react';
 import RootLayout from "@/app/components/RootLayout/RootLayout";
 import UseFetch from "@/hooks/UseFetch";
 import { translateKeys, translationMap } from "@/pages/addDevice/SaveDevice";
@@ -68,10 +68,14 @@ const AddDevice = () => {
 
     const handleSubmit = async () => {
         console.log('Submitting form...');
+        const token = localStorage.getItem('token');
         const translatedData = translateKeys(DeviceData, translationMap);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the headers
+            },
             body: JSON.stringify(translatedData)
         };
         try {
@@ -105,6 +109,30 @@ const AddDevice = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 md:break-after-auto">
                 {Object.keys(DeviceData).map((key) => {
                     if (key === "specificaties") return null;
+                    if (key === "Type") return (
+                        <Select
+                            key={key}
+                            size="md"
+                            value={DeviceData[key]}
+                            selectedKeys={[DeviceData[key]]}
+                            variant="bordered"
+                            label="Type"
+                            onSelectionChange={(newValue) => setDeviceData({...DeviceData, [key]: newValue.anchorKey})}
+                            className="mt-2 pr-3 pb-0.5 pt-0.5 relative z-0 w-full"
+                        >
+                            <SelectItem key="laptop" value="laptop">Laptop</SelectItem>
+                            <SelectItem key="desktop" value="desktop">Desktop</SelectItem>
+                            <SelectItem key="telefoon" value="telefoon">Telefoon</SelectItem>
+                            <SelectItem key="monitor" value="monitor">Monitor</SelectItem>
+                            <SelectItem key="tablet" value="tablet">Tablet</SelectItem>
+                            <SelectItem key="server" value="server">Server</SelectItem>
+                            <SelectItem key="switch" value="switch">Switch</SelectItem>
+                            <SelectItem key="router" value="router">Router</SelectItem>
+                            <SelectItem key="printer" value="printer">Printer</SelectItem>
+                            <SelectItem key="accesspoint" value="accesspoint">Accesspoint</SelectItem>
+                            <SelectItem key="firewall" value="firewall">Firewall</SelectItem>
+                        </Select>
+                    );
                     return (
                         <Input
                             key={key}
@@ -119,6 +147,7 @@ const AddDevice = () => {
                     );
                 })}
             </div>
+            <pre>{JSON.stringify(DeviceData, null, 2)}</pre>
             <hr className="w-full h-1 mx-auto my-4 bg-gray-300 border-0 rounded md:my-8 dark:bg-gray-700"/>
             <Selector
                 alreadyUsedSpecs={alreadyUsedSpecs}
@@ -143,6 +172,9 @@ const AddDevice = () => {
             <AddNewSpecification
                 alreadyUsedSpecs={alreadyUsedSpecs}
                 setAlreadyUsedSpecs={setAlreadyUsedSpecs}
+                setMessage={setMessage}
+                resetState={resetState}
+                setIsError={setIsError}
             />
         </RootLayout>
     );
