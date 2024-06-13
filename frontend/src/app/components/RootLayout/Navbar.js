@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from "next/link";
-import { Button } from "@nextui-org/react";
 import { Dropdown, DropdownItem, DropdownTrigger, DropdownMenu, Button } from "@nextui-org/react";
 import { GiHamburgerMenu } from "react-icons/gi";
 

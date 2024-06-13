@@ -32,7 +32,7 @@ export default function Selector({ alreadyUsedSpecs, DeviceData, setDeviceData, 
             Create the selector and specify the handleSelectionChange as parameter
             */}
             {createSelectorWithOptions(values, handleSelectionChange, alreadyUsedSpecs)}
-            <p className="text-small text-default-500">Selected: {Array.from(values).join(", ")}</p>
+            <p className="text-small text-default-500">Geselecteerd: {Array.from(values).join(", ")}</p>
             {/*
             Create the Input options and specify the DeviceData as parameter to directly store the
             values in the state of the device data.

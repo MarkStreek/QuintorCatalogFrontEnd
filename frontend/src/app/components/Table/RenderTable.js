@@ -46,10 +46,13 @@ export default function DevicesTableComponent({ data, loading }) {
                 device.serialNumber.toLowerCase().includes(filterValue.toLowerCase()) ||
                 device.invoiceNumber.toLowerCase().includes(filterValue.toLowerCase()) ||
                 device.locationName.toLowerCase().includes(filterValue.toLowerCase()) ||
-                device.locationCity.toLowerCase().includes(filterValue.toLowerCase())
+                device.locationCity.toLowerCase().includes(filterValue.toLowerCase()) ||
+                device.specs.some(spec =>
+                    spec.value.toLowerCase().includes(filterValue.toLowerCase()) ||
+                    spec.specName.toLowerCase().includes(filterValue.toLowerCase()) // Add this line
+                )
             );
         }
-
         return filteredDevices;
     }, [data, filterValue, hasSearchFilter]);
 
@@ -91,8 +94,14 @@ export default function DevicesTableComponent({ data, loading }) {
      */
     const sortedItems = useMemo(() => {
         return [...items].sort((a, b) => {
-            const first = a[sortDescriptor.column];
-            const second = b[sortDescriptor.column];
+            let first, second;
+            if (sortDescriptor.column === 'specs') {
+                first = a.specs.map(spec => spec.specName + ' ' + spec.value).join(', ');
+                second = b.specs.map(spec => spec.specName + ' ' + spec.value).join(', ');
+            } else {
+                first = a[sortDescriptor.column];
+                second = b[sortDescriptor.column];
+            }
             const cmp = first < second ? -1 : first > second ? 1 : 0;
 
             return sortDescriptor.direction === 'descending' ? -cmp : cmp;
@@ -273,7 +282,7 @@ export default function DevicesTableComponent({ data, loading }) {
                     <TableColumn allowsSorting key="invoiceNumber">Factuurnummer</TableColumn>
                     <TableColumn allowsSorting key="locationName">Locatie naam</TableColumn>
                     <TableColumn allowsSorting key="locationCity">Locatie Stad</TableColumn>
-                    <TableColumn>Specifications</TableColumn>
+                    <TableColumn allowsSorting key="specs">Specifications</TableColumn>
                     <TableColumn>Actions</TableColumn>
                 </TableHeader>
                 <TableBody items={sortedItems} emptyContent={'Er zijn geen apparaten gevonden'}>
