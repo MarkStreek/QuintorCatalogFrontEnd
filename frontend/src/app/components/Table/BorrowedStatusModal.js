@@ -14,6 +14,7 @@ import { format } from 'date-fns';
  */
 const BorrowedStatusModal = ({ isOpen, onClose, status, onApprove, onReject }) => {
     if (!status) return null;
+    console.log(status);
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>

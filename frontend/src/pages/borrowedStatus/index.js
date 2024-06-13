@@ -4,6 +4,7 @@ import BorrowedStatusTableComponent from "@/app/components/Table/RenderBorrowedS
 import UseFetch from "@/hooks/UseFetch";
 import withAuth from "@/app/components/withAuth";
 
+
 /**
  * Function that returns the borrowed status page of the application.
  * On this page, there is a Table with all the borrowed statuses.
@@ -25,7 +26,8 @@ const BorrowedStatusPage = () => {
         user: item.user,
         device: item.device,
         status: item.status,
-        borrowDate: item.borrowDate
+        borrowDate: item.borrowDate,
+        description: item.description
     })) || [];
 
     // Return the RootLayout component,

@@ -107,7 +107,7 @@ const BorrowedRequest = () => {
                                 <option value="" disabled>Selecteer een apparaat</option>
                                 {Array.isArray(devices) && devices.map((device) => (
                                     <option key={device.id} value={device.id}>
-                                        {device.type} - {device.brandName} - {device.model}
+                                        {device.type}:{device.id} - {device.brandName} - {device.model}
                                     </option>
                                 ))}
                             </select>
