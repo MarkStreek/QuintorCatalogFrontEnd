@@ -33,6 +33,13 @@ const BorrowedRequest = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!description.trim()) {
+            setIsError(true);
+            setMessage('Fout: Beschrijving mag niet leeg zijn');
+            return;
+        }
+
         const borrowRequest = {
             userName,
             deviceId: parseInt(deviceId, 10),
@@ -54,6 +61,10 @@ const BorrowedRequest = () => {
             if (response.ok) {
                 setIsError(false);
                 setMessage('Apparaat succesvol uitgeleend');
+                // Clear the form
+                setUserName('');
+                setDeviceId('');
+                setDescription('');
             } else {
                 const errorData = await response.json();
                 setIsError(true);
@@ -107,7 +118,7 @@ const BorrowedRequest = () => {
                                 <option value="" disabled>Selecteer een apparaat</option>
                                 {Array.isArray(devices) && devices.map((device) => (
                                     <option key={device.id} value={device.id}>
-                                        {device.type} - {device.brandName} - {device.model}
+                                        {device.type}:{device.id} - {device.brandName} - {device.model}
                                     </option>
                                 ))}
                             </select>
