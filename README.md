@@ -4,28 +4,61 @@
 [![Forks][forks-shield]][forks-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-<div align="center">
-  <a href="https://github.com/MarkStreek/QuintorCatalogFrontEnd">
-    <img src="https://quintor.nl/wp-content/uploads/2022/08/logo-square.png" alt="Logo" width="100" height="100">
-  </a>
-  <a href="https://github.com/MarkStreek/QuintorCatalogFrontEnd">
-    <img src="https://www.heeredwinger.nl/wp-content/uploads/2019/12/Logo-Hanze.jpg" alt="Logo" width="250" height="100">
-  </a>
-<h1 align="center">QuintorCatalogFrontEnd</h3>
+# QuintorCatalogFrontEnd
 
-  <p align="center">
-    Automated hardware catalog for the software company Quintor
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
-  </p>
-</div>
+The Quintor Catalog is an automated hardware catalog for the software company Quintor. System administrators can add, update, delete, search, filter, sort, and borrow hardware components.
+CTO can approve/deny a borrow request to a user. The hardware is stored in a database. The back end was built using Spring Boot. [Go to Back end repo](https://github.com/MarkStreek/QuintorCatalogBackEnd)
+
+![Screenshot1](frontend/public/screenshots/welkom.png)
+![Screenshot2](frontend/public/screenshots/lijstvanapparaten.png)
+![Screenshot3](frontend/public/screenshots/apparaattoevoegen.png)
+![Screenshot4](frontend/public/screenshots/verzoekgoedkeuren.png)
+
+As the name suggests, this is the front end of the project. The front end was built using React. The front end communicates with the back end using REST API.
+If you're interested in the back end mechanisms, please take a look at the broad documentation in the back end repository.
+
+[//]: # (<div align="center">)
+
+[//]: # (  <a href="https://github.com/MarkStreek/QuintorCatalogFrontEnd">)
+
+[//]: # (    <img src="https://quintor.nl/wp-content/uploads/2022/08/logo-square.png" alt="Logo" width="100" height="100">)
+
+[//]: # (  </a>)
+
+[//]: # (  <a href="https://github.com/MarkStreek/QuintorCatalogFrontEnd">)
+
+[//]: # (    <img src="https://www.heeredwinger.nl/wp-content/uploads/2019/12/Logo-Hanze.jpg" alt="Logo" width="250" height="100">)
+
+[//]: # (  </a>)
+
+[//]: # (<h1 align="center">QuintorCatalogFrontEnd</h3>)
+
+[//]: # ()
+[//]: # (  <p align="center">)
+
+[//]: # (    Automated hardware catalog for the software company Quintor)
+
+[//]: # (    <br />)
+
+[//]: # (    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>)
+
+[//]: # (    <br />)
+
+[//]: # (    <br />)
+
+[//]: # (    <a href="https://github.com/github_username/repo_name">View Demo</a>)
+
+[//]: # (    ·)
+
+[//]: # (    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>)
+
+[//]: # (    ·)
+
+[//]: # (    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>)
+
+[//]: # (  </p>)
+
+[//]: # (</div>)
 
 ## Table of Contents
 
@@ -34,6 +67,16 @@
 - [About the project](#about-the-project)
 - [Built with](#built-with)
 - [Getting Started](#getting-started)
+
+## Getting Started
+
+To start this project
+
+## Known Issues
+
+1. Double-click on dropdowns will cause an error, easy fixable by just realoading the page (F5/cmd + R)
+2. If token is expired, in not all situations the user will be redirected to the login page, but don't worry, press the logout button and login again.
+    - If this error occurs, the user can navigate through the application, but in absolutely no case can see information about devices or borrow requests.
 
 ## About Quintor
 
@@ -62,16 +105,6 @@ The hardware tools are stored in a database. This information is served to the f
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
-
-## Getting Started
-
-Will be released after finishing the application...
-
-## Unit Tests
-
->[![Run Tests](https://github.com/MarkStreek/QuintorCatalogFrontEnd/actions/workflows/runTests.yml/badge.svg)](https://github.com/MarkStreek/QuintorCatalogFrontEnd/actions/workflows/runTests.yml)
-
-
 
 
 <!-- Markdown Links -->

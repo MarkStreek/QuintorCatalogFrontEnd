@@ -22,7 +22,7 @@ const Home = () => {
         <RootLayout>
             <h1 className="text-5xl">Quintor hardware catalogus</h1>
             <br />
-            <p className="text-2xl">Welkom, User</p>
+            <p className="text-2xl">Welkom</p>
             <br />
             <p className="text-2xl">Snelle links:</p>
             <div className="mt-2 flex gap-2">
