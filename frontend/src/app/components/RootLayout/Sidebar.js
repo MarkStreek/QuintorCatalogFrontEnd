@@ -50,9 +50,6 @@ export default function Sidebar() {
                         <li>
                             <Link href="/borrowedStatus" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Uitleen status</Link>
                         </li>
-                        <li>
-                            <Link href="/about" className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-3 rounded-md">Over</Link>
-                        </li>
                     </ul>
                 </nav>
             </div>

@@ -56,11 +56,6 @@ export default function Navbar() {
                                     Uitleenstatus
                                 </Link>
                             </DropdownItem>
-                            <DropdownItem key="about">
-                                <Link href="/about" className="text-gray-800 px-2 py-3 rounded-md w-full">
-                                    Over
-                                </Link>
-                            </DropdownItem>
                             <DropdownItem key="logout">
                                 <Link href={""} className="text-gray-800 px-2 py-3 rounded-md w-full" onClick={logout}>
                                     Logout
