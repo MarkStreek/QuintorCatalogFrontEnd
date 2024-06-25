@@ -61,7 +61,7 @@ export default function Sidebar() {
                     <PopoverTrigger>
                         <User
                             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                            name={email}
+                            name={email.slice(0, 12)}
                             bordered
                             color="primary"
                         />

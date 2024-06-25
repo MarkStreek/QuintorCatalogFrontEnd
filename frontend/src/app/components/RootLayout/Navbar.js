@@ -12,15 +12,6 @@ import { GiHamburgerMenu } from "react-icons/gi";
  * @returns {Element} The Navbar component.
  */
 export default function Navbar() {
-    const [email, setEmail] = useState('');
-
-    useEffect(() => {
-        // Ensure localStorage is accessed only on the client side
-        if (typeof window !== 'undefined') {
-            const storedEmail = localStorage.getItem('email');
-            setEmail(storedEmail);
-        }
-    }, []);
 
     const logout = () => {
         localStorage.removeItem('token');
