@@ -70,7 +70,7 @@ const DeviceModal = ({ device, isOpen, onClose, onSave, setMessage, setIsError }
         <Modal isOpen={isOpen} onOpenChange={onClose}>
             <ModalContent>
                 <>
-                    <ModalHeader className="flex flex-col gap-1">Edit Device Details</ModalHeader>
+                    <ModalHeader className="flex flex-col gap-2">Edit Device Details</ModalHeader>
                     <ModalBody className="max-h-96 overflow-y-auto">
                         <Input
                             fullWidth
@@ -128,6 +128,7 @@ const DeviceModal = ({ device, isOpen, onClose, onSave, setMessage, setIsError }
                                     <Input
                                         fullWidth
                                         label="Specification Name"
+                                        className="p-2"
                                         name="specName"
                                         value={spec.specName}
                                         onChange={(e) => handleSpecChange(index, e)}
@@ -135,6 +136,7 @@ const DeviceModal = ({ device, isOpen, onClose, onSave, setMessage, setIsError }
                                     <Input
                                         fullWidth
                                         label="Specification Value"
+                                        className="p-2"
                                         name="value"
                                         value={spec.value}
                                         onChange={(e) => handleSpecChange(index, e)}

@@ -35,9 +35,10 @@ const BorrowedStatusPage = () => {
     return (
         <RootLayout>
             <div>
-                <h1 className="text-5xl">Lijst van alle uitgeleende apparaten</h1>
-                <br />
-                <BorrowedStatusTableComponent data={transformedData} loading={loading} error={error} />
+                <h1 className="text-5xl">Lijst van uitgeleende apparaten</h1>
+                <hr className="w-full h-1 mx-auto my-4 bg-gray-300 border-0 rounded md:my-4 dark:bg-gray-700"/>
+                <br/>
+                <BorrowedStatusTableComponent data={transformedData} loading={loading} error={error}/>
             </div>
         </RootLayout>
     );

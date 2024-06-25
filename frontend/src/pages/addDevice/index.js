@@ -115,6 +115,7 @@ const AddDevice = () => {
                             size="md"
                             value={DeviceData[key]}
                             selectedKeys={[DeviceData[key]]}
+                            placeholder={"Selecteer een type"}
                             variant="bordered"
                             label="Type"
                             onSelectionChange={(newValue) => setDeviceData({...DeviceData, [key]: newValue.anchorKey})}

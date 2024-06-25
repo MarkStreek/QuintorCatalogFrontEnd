@@ -60,7 +60,7 @@ export default function DevicesTableComponent({ data, loading }) {
         return filteredDevices;
     }, [data, filterValue, hasSearchFilter]);
 
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(15);
     const [page, setPage] = useState(1);
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -170,9 +170,9 @@ export default function DevicesTableComponent({ data, loading }) {
                             className="bg-transparent outline-none text-default-400 text-small"
                             onChange={onRowsPerPageChange}
                         >
-                            <option value="5">5</option>
-                            <option value="10">10</option>
                             <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
                         </select>
                     </label>
                 </div>
@@ -229,16 +229,21 @@ export default function DevicesTableComponent({ data, loading }) {
     }
 
     const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this device?")) {
+        if (window.confirm("Weet je zeker dat je dit apparaat wilt verwijderen?")) {
             try {
-                // Replace with your delete request
+                const token = localStorage.getItem('token');
                 let response = await fetch(`http://localhost:8080/devices/${id}`, {
                     method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
                 let responseJSON = await response.json();
                 if (responseJSON.statusCode === 200) {
                     setIsError(false);
                     setMessage(responseJSON.message);
+                    window.location.reload();
                 } else {
                     setIsError(true);
                     setMessage(responseJSON.message);

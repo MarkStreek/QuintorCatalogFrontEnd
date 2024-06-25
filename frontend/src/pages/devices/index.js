@@ -25,8 +25,9 @@ const DevicesPage = () => {
         <RootLayout>
             <div className="md:mt-0 xs:mt-12 sm:mt-12">
                 <h1 className="text-5xl">Lijst van alle apparaten</h1>
+                <hr className="w-full h-1 mx-auto my-4 bg-gray-300 border-0 rounded md:my-4 dark:bg-gray-700"/>
                 <br />
-                <DevicesTableComponent data={data} loading={loading} error={error} />
+                <DevicesTableComponent data={data} loading={loading} error={error}/>
             </div>
         </RootLayout>
     );

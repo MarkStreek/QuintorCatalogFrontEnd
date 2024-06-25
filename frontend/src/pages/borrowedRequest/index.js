@@ -79,17 +79,16 @@ const BorrowedRequest = () => {
     return (
         <RootLayout>
             <div className="w-full">
-                <Card style={{ width: '100%', padding: '2rem' }}>
+                <h1 className="text-5xl md:mt-0 xs:mt-12 sm:mt-12">Uitleen verzoek</h1>
+                <hr className="w-full h-1 mx-auto my-4 bg-gray-300 border-0 rounded md:my-4 dark:bg-gray-700"/>
+                <br/>
+                <Card style={{width: '100%', padding: '2rem'}}>
                     {(devicesLoading || usersLoading) ? (
                         <p>Loading...</p>
                     ) : (devicesError || usersError) ? (
                         <p>Error loading data: {devicesError ? devicesError.message : usersError.message}</p>
                     ) : (
                         <form onSubmit={handleSubmit}>
-                            <h1 className="text-5xl md:mt-0 xs:mt-12 sm:mt-12">Uitleen verzoek</h1>
-                            <br/>
-                            <hr/>
-                            <br/>
                             <label htmlFor="userName">Werknemer:</label>
                             <select
                                 id="userName"
@@ -137,7 +136,7 @@ const BorrowedRequest = () => {
                             </Button>
                         </form>
                     )}
-                    {message && <Notification message={message} onClose={() => setMessage(null)} />}
+                    {message && <Notification message={message} onClose={() => setMessage(null)}/>}
                 </Card>
             </div>
         </RootLayout>
