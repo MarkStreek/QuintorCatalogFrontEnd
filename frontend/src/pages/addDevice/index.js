@@ -15,6 +15,7 @@ import { translateKeys, translationMap } from "@/pages/addDevice/SaveDevice";
 import Selector from "@/pages/addDevice/CreateSpecificationInput";
 import AddNewSpecification from "@/pages/addDevice/AddNewSpecification";
 import withAuth from "@/app/components/withAuth";
+import {CheckCircleIcon, ExclamationIcon, XIcon} from "@heroicons/react/solid";
 
 /**
  * The main function of the addDevice page.
@@ -46,8 +47,22 @@ const AddDevice = () => {
     function Notification({ message }) {
         const messageClass = isError ? "bg-red-500" : "bg-green-500";
         return (
-            <div className={`fixed top-20 right-20 text-white px-4 py-2 rounded shadow-md ${messageClass}`}>
-                {message}
+            <div className={`fixed top-20 right-20 text-white px-4 py-2 rounded-lg shadow-lg w-1/4 ${messageClass} border border-white border-opacity-20 backdrop-filter backdrop-blur-lg`}>
+                <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                        {isError ? <ExclamationIcon className="h-5 w-5 text-white" /> : <CheckCircleIcon className="h-5 w-5 text-white" />}
+                    </div>
+                    <div className="ml-3 w-0 flex-1 pt-0.5">
+                        <p className="text-sm leading-5 font-medium text-white">
+                            {message}
+                        </p>
+                    </div>
+                    <div className="ml-4 flex-shrink-0 flex">
+                        <button className="inline-flex text-white focus:outline-none focus:text-gray-500 transition ease-in-out duration-150">
+                            <XIcon className="h-5 w-5" />
+                        </button>
+                    </div>
+                </div>
             </div>
         );
     }
