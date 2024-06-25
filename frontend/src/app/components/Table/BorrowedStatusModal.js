@@ -14,7 +14,6 @@ import { format } from 'date-fns';
  */
 const BorrowedStatusModal = ({ isOpen, onClose, status, onApprove, onReject }) => {
     if (!status) return null;
-    console.log(status);
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
@@ -40,11 +39,11 @@ const BorrowedStatusModal = ({ isOpen, onClose, status, onApprove, onReject }) =
                                 <Button color="success" onPress={() => onApprove(status.id)}>
                                     Goedkeuren
                                 </Button>
-                                <Button color="error" onPress={() => onReject(status.id)}>
-                                    Afwijzen
-                                </Button>
                             </>
                         )}
+                        <Button color="danger" onPress={() => onReject(status.id)}>
+                            Verwijderen
+                        </Button>
                         <Button auto flat color="error" onPress={onClose}>
                             Sluiten
                         </Button>

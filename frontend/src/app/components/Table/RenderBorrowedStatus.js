@@ -84,28 +84,28 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
     };
 
     const handleReject = async (id) => {
-        const token = localStorage.getItem('token'); // Get the token from localStorage
-        try {
-            const response = await fetch(`http://localhost:8080/borrowedstatus/reject/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}` // Include the token in the headers
+        if (window.confirm("Weet je zeker dat je dit verzoek wilt verwijderen?")) {
+            try {
+                const token = localStorage.getItem('token');
+                let response = await fetch(`http://localhost:8080/borrowedstatus/delete/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                let responseJSON = await response.json();
+                if (responseJSON.statusCode === 200) {
+                    setIsError(false);
+                    setMessage(responseJSON.message);
+                    window.location.reload();
+                } else {
+                    setIsError(true);
+                    setMessage(responseJSON.message);
                 }
-            });
-
-            if (response.ok) {
-                setIsError(false);
-                setMessage('Verzoek afgewezen');
-                closeModal();
-                router.reload();
-            } else {
-                setIsError(true);
-                setMessage('Verzoek niet afgewezen');
+            } catch (error) {
+                console.error('Failed to delete device:', error);
             }
-        } catch (error) {
-            setIsError(true);
-            setMessage('An error occurred');
-            console.error('Failed to reject request:', error);
         }
     };
 
@@ -244,12 +244,12 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
                 <TableBody items={sortedItems} emptyContent={'Er zijn geen uitgeleende apparaten gevonden'}>
                     {sortedItems.map(item => (
                         <TableRow key={item.id}>
-                            <TableCell className="align-top whitespace-pre-wrap">{item.user.name}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{item.device.type}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{item.device.brandName}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{item.status}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">{format(new Date(item.borrowDate), 'dd-MM-yyyy')}</TableCell>
-                            <TableCell className="align-top whitespace-pre-wrap">
+                            <TableCell>{item.user.name}</TableCell>
+                            <TableCell>{item.device.type}</TableCell>
+                            <TableCell>{item.device.brandName}</TableCell>
+                            <TableCell>{item.status}</TableCell>
+                            <TableCell>{format(new Date(item.borrowDate), 'dd-MM-yyyy')}</TableCell>
+                            <TableCell>
                                 <Button onClick={() => openModal(item)}>Bekijk verzoek</Button>
                             </TableCell>
                         </TableRow>

@@ -230,6 +230,7 @@ export default function DevicesTableComponent({ data, loading }) {
 
     const handleDelete = async (id) => {
         if (window.confirm("Weet je zeker dat je dit apparaat wilt verwijderen?")) {
+
             try {
                 const token = localStorage.getItem('token');
                 let response = await fetch(`http://localhost:8080/devices/${id}`, {
