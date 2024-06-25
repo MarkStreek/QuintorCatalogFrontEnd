@@ -77,6 +77,8 @@ To start this project
 1. Double-click on dropdowns will cause an error, easy fixable by just realoading the page (F5/cmd + R)
 2. If token is expired, in not all situations the user will be redirected to the login page, but don't worry, press the logout button and login again.
     - If this error occurs, the user can navigate through the application, but in absolutely no case can see information about devices or borrow requests.
+3. POP-UP windows should be allowed by your browser. These alerts needs to be allowed because of certain actions in the application
+    - It's not actually a bug or issue, but important to know, otherwise some actions could not work
 
 ## About Quintor
 
