@@ -102,7 +102,9 @@ const AddDevice = () => {
                 setIsError(true);
             }
             setMessage(data.message);
-            resetState();
+            if (response.ok) {
+                resetState();
+            }
             setTimeout(() => {
                 setMessage(null);
             }, 4000);
