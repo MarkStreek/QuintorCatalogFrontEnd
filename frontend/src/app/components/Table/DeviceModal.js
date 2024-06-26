@@ -58,6 +58,10 @@ const DeviceModal = ({ device, isOpen, onClose, onSave, setMessage, setIsError }
             await updateDevice(editedDevice, setMessage, setIsError); // Save the updated device
             onSave(editedDevice); // Call the onSave callback
             onClose(); // Close the modal
+            // reload after 2 seconds
+            setTimeout(() => {
+                window.location.reload();
+            } , 750);
         } catch (error) {
             console.error('Failed to save device:', error); // Log any errors
         }

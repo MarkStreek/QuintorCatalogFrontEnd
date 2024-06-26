@@ -17,49 +17,6 @@ CTO can approve/deny a borrow request to a user. The hardware is stored in a dat
 As the name suggests, this is the front end of the project. The front end was built using React. The front end communicates with the back end using REST API.
 If you're interested in the back end mechanisms, please take a look at the broad documentation in the back end repository.
 
-[//]: # (<div align="center">)
-
-[//]: # (  <a href="https://github.com/MarkStreek/QuintorCatalogFrontEnd">)
-
-[//]: # (    <img src="https://quintor.nl/wp-content/uploads/2022/08/logo-square.png" alt="Logo" width="100" height="100">)
-
-[//]: # (  </a>)
-
-[//]: # (  <a href="https://github.com/MarkStreek/QuintorCatalogFrontEnd">)
-
-[//]: # (    <img src="https://www.heeredwinger.nl/wp-content/uploads/2019/12/Logo-Hanze.jpg" alt="Logo" width="250" height="100">)
-
-[//]: # (  </a>)
-
-[//]: # (<h1 align="center">QuintorCatalogFrontEnd</h3>)
-
-[//]: # ()
-[//]: # (  <p align="center">)
-
-[//]: # (    Automated hardware catalog for the software company Quintor)
-
-[//]: # (    <br />)
-
-[//]: # (    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>)
-
-[//]: # (    <br />)
-
-[//]: # (    <br />)
-
-[//]: # (    <a href="https://github.com/github_username/repo_name">View Demo</a>)
-
-[//]: # (    ·)
-
-[//]: # (    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>)
-
-[//]: # (    ·)
-
-[//]: # (    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>)
-
-[//]: # (  </p>)
-
-[//]: # (</div>)
-
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -71,6 +28,26 @@ If you're interested in the back end mechanisms, please take a look at the broad
 ## Getting Started
 
 To start this project
+
+## Important notes
+
+- The Table with devices is developed to show OS, Storage and RAM not in the dropdown, but appearing right away in the table.
+
+This was done using the following code:
+
+```javascript
+// RenderTable.js - starting at line 314
+if (["OS", "Storage", "RAM"].includes(spec.specName)) {
+   return (
+           <div key={index} className="flex">
+              <div className="mr-2">{spec.specName}:</div>
+              <div className="font-bold">{spec.value}</div>
+           </div>
+   );
+}
+```
+
+> Make sure to add Specs with exact the same name as the ones in the code above. (OS, storage, RAM). You could change these names to preferences.
 
 ## Known Issues
 

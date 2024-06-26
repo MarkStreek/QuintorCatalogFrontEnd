@@ -37,6 +37,9 @@ const BorrowedRequest = () => {
         if (!description.trim()) {
             setIsError(true);
             setMessage('Fout: Beschrijving mag niet leeg zijn');
+            setTimeout(() => {
+                setMessage(null);
+            }, 2000);
             return;
         }
 
@@ -60,11 +63,14 @@ const BorrowedRequest = () => {
 
             if (response.ok) {
                 setIsError(false);
-                setMessage('Apparaat succesvol uitgeleend');
+                setMessage('Uitleenverzoek succesvol ingediend');
                 // Clear the form
                 setUserName('');
                 setDeviceId('');
                 setDescription('');
+                setTimeout(() => {
+                    setMessage(null);
+                }, 2000);
             } else {
                 const errorData = await response.json();
                 setIsError(true);

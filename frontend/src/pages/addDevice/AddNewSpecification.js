@@ -70,7 +70,6 @@ export default function AddNewSpecification({alreadyUsedSpecs, setAlreadyUsedSpe
                         }]);
                         // Reset the addNewSpec state
                         setMessage("Niewe specificatie succesvol toegevoegd, nu vindbaar in de lijst met specificaties.");
-                        resetState();
                         setTimeout(() => {
                             setMessage(null);
                         }, 4000);

@@ -156,7 +156,7 @@ export default function DevicesTableComponent({ data, loading }) {
                     <Input
                         isClearable
                         className='w-full sm:max-w-[44%]'
-                        placeholder='Zoek op modelnaam...'
+                        placeholder='Zoek naar apparaten...'
                         startContent={<FaSearch />}
                         value={filterValue}
                         onClear={() => onClear()}
@@ -311,7 +311,7 @@ export default function DevicesTableComponent({ data, loading }) {
                                 {item.specs && item.specs.length > 0 ? (
                                     <>
                                         {item.specs.map((spec, index) => {
-                                            if (["OS", "storage", "RAM"].includes(spec.specName)) {
+                                            if (["OS", "Storage", "RAM"].includes(spec.specName)) {
                                                 return (
                                                     <div key={index} className="flex">
                                                         <div className="mr-2">{spec.specName}:</div>
@@ -331,7 +331,7 @@ export default function DevicesTableComponent({ data, loading }) {
                                             <PopoverContent>
                                                 <div className="grid grid-cols-2 gap-x-4">
                                                     {item.specs.map((spec, index) => {
-                                                        if (!["OS", "storage", "RAM"].includes(spec.specName)) {
+                                                        if (!["OS", "Storage", "RAM"].includes(spec.specName)) {
                                                             return (
                                                                 <React.Fragment key={index}>
                                                                     <div className="text-md text-left font-semibold">

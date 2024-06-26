@@ -72,9 +72,13 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
                 setMessage('Verzoek goedgekeurd');
                 closeModal();
                 router.reload();
+
             } else {
                 setIsError(true);
-                setMessage('Verzoek afgekeurd');
+                setMessage('Deze operatie is niet toegestaan voor dit account');
+                setTimeout(() => {
+                    setMessage(null);
+                }, 2000);
             }
         } catch (error) {
             setIsError(true);
