@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Navbar from "@/app/components/RootLayout/Navbar";
 import Sidebar from "@/app/components/RootLayout/Sidebar";
-
-
+import { useRouter } from "next/router";
 
 /**
  * Function that returns the RootLayout component.
@@ -15,6 +14,30 @@ import Sidebar from "@/app/components/RootLayout/Sidebar";
  * @constructor
  */
 const RootLayout = ({ children }) => {
+
+    const router = useRouter();
+    // check for token presence, it not presence redirect to login page,
+    // if presence, POST request with the bearer token to localhost:8080/auth/validate
+    // if response.ok is false, redirect to login page
+    // if response.ok is true, continue with the page
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.push("/login").then();
+        } else {
+            fetch("http://localhost:8080/auth/validate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }).then((response) => {
+                if (!response.ok) {
+                    router.push("/login").then();
+                }
+            });
+        }
+    }, []);
+
     return (
         <div className="overpass-fontType">
             <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
