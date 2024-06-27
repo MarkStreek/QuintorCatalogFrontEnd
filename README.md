@@ -27,11 +27,41 @@ If you're interested in the back end mechanisms, please take a look at the broad
 
 ## Getting Started
 
-To start this project
+**! It is very advised to first read more about the project before starting!**
 
-## Important notes
+To start the application, make sure the back end Spring Boot application is running. After that, open a new terminal and navigate to this project. Navigate into the `frontend` and start the project:
 
-- The Table with devices is developed to show OS, Storage and RAM not in the dropdown, but appearing right away in the table.
+```bash
+# Navigate to the /frontend folder
+cd frontend
+
+# Starting application
+npm start
+````
+
+> Warning: before starting the application, you have to meet the following (minimum) requirements to run the application:
+
+**Install**:
+- Node.js 20.11.0 or higher
+  - Make sure your npm version is at least 10.2.4
+
+**Install all the dependencies**:
+
+- In the terminal, just as below, navigate to this project, go into the frontend dir and install all the dependencies:
+
+```bash
+# Navigate to the /frontend folder
+cd frontend 
+
+# Install all the dependencies
+npm install
+````
+
+> After completing the steps above, you can start the application.
+
+## Customization
+
+The Table with devices is developed to show OS, Storage and RAM not in the dropdown, but appearing right away in the table.
 
 This was done using the following code:
 
@@ -51,10 +81,8 @@ if (["OS", "Storage", "RAM"].includes(spec.specName)) {
 
 ## Known Issues
 
-1. Double-click on dropdowns will cause an error, easy fixable by just realoading the page (F5/cmd + R)
-2. If token is expired, in not all situations the user will be redirected to the login page, but don't worry, press the logout button and login again.
-    - If this error occurs, the user can navigate through the application, but in absolutely no case can see information about devices or borrow requests.
-3. POP-UP windows should be allowed by your browser. These alerts needs to be allowed because of certain actions in the application
+1. Double-click on dropdowns will cause an error, easy fixable by just reloading the page (F5/cmd + R)
+2. POP-UP windows should be allowed by your browser. These alerts need to be allowed because of certain actions in the application
     - It's not actually a bug or issue, but important to know, otherwise some actions could not work
 
 ## About Quintor
@@ -75,6 +103,18 @@ Quintor has the following disciplines:
 This project was created by students bioinformatics at the Hanze University of applied sciences. The main task was to create a (automated) catalog to store all hardware components in the company.
 
 The hardware tools are stored in a database. This information is served to the front end using a REST API.
+
+## Full insight
+
+This section will give you a more detailed insight into the project. The project is divided into two parts: the front end and the back end. You can find the back end documentation [here](https://github.com/MarkStreek/QuintorCatalogBackEnd/wiki).
+
+### RootLayout
+
+fill in...
+
+### Notifications
+
+fill in...
 
 ## Built with
 
