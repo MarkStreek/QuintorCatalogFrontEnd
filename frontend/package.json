@@ -13,6 +13,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^1.0.6",
+    "@nextui-org/dropdown": "^2.1.24",
     "@nextui-org/modal": "^2.0.33",
     "@nextui-org/react": "^2.2.10",
     "@nextui-org/system": "^2.1.2",

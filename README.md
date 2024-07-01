@@ -119,6 +119,8 @@ The hardware tools are stored in a database. This information is served to the f
 
 This section will give you a more detailed insight into the project. The project is divided into two parts: the front end and the back end. You can find the back end documentation [here](https://github.com/MarkStreek/QuintorCatalogBackEnd/wiki).
 
+> There is a `wiki page` available for this project. The wiki page contains this information in a more structured way. [Go to the wiki page](https://github.com/MarkStreek/QuintorCatalogFrontEnd/wiki)
+
 ### React
 
 Very important to know is that the project is built using React. React is a JavaScript library for building user interfaces. The learning curve of React is quite steep. Therefore it is important to have a good understanding of React before starting, developing or already reading the project.
