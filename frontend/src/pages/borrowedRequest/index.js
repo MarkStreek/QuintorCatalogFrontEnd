@@ -19,6 +19,14 @@ const BorrowedRequest = () => {
     const [message, setMessage] = useState('');
     const [isError, setIsError] = useState(false);
 
+    /**
+     * Notification component displays a notification message with an optional close button.
+     *
+     * @param {Object} props - The component props.
+     * @param {string} props.message - The notification message to display.
+     * @param {function} props.onClose - The callback function to be called when the close button is clicked.
+     * @returns {JSX.Element} The rendered Notification component.
+     */
     const Notification = ({ message, onClose }) => {
         const messageClass = isError ? "bg-red-500" : "bg-green-500";
         return (
@@ -31,6 +39,12 @@ const BorrowedRequest = () => {
         );
     };
 
+    /**
+     * Handles the form submission for the borrowed request.
+     * 
+     * @param {Event} event - The form submission event.
+     * @returns {Promise<void>} - A promise that resolves when the form submission is complete.
+     */
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -48,15 +62,15 @@ const BorrowedRequest = () => {
             deviceId: parseInt(deviceId, 10),
             description,
         };
-
-        const token = localStorage.getItem('token'); // Get the token from localStorage
+        
+        const token = localStorage.getItem('token'); 
 
         try {
             const response = await fetch('http://localhost:8080/borrowedstatus', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Include the token in the headers
+                    'Authorization': `Bearer ${token}` 
                 },
                 body: JSON.stringify(borrowRequest),
             });

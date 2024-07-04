@@ -70,6 +70,9 @@ const AddDevice = () => {
     const [values, setValues] = useState(new Set([]));
     const [DeviceData, setDeviceData] = useState(initialDeviceData);
 
+    /**
+     * Resets the state of the component.
+     */
     const resetState = () => {
         setDeviceData(initialDeviceData);
         setSelectedSpecs({});
@@ -81,6 +84,12 @@ const AddDevice = () => {
     // Call a function that fetches the specs from the API and updates the alreadyUsedSpecs state.
     new getAlreadyUsedSpecs(alreadyUsedSpecs, setAlreadyUsedSpecs);
 
+    /**
+     * Handles the form submission.
+     * @async
+     * @function handleSubmit
+     * @returns {Promise<void>} A Promise that resolves when the form submission is complete.
+     */
     const handleSubmit = async () => {
         console.log('Submitting form...');
         const token = localStorage.getItem('token');

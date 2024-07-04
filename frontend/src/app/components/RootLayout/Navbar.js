@@ -16,7 +16,7 @@ export default function Navbar() {
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('email');
-        window.location.href = '/login'; // Redirect to the login page
+        window.location.href = '/login';
     };
 
     return (

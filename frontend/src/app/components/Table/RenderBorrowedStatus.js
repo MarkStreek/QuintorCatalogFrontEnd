@@ -34,6 +34,14 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
     const [message, setMessage] = useState(null);
     const [isError, setIsError] = useState(false);
 
+    /**
+     * Renders a notification component with a message and an optional close button.
+     *
+     * @param {Object} props - The component props.
+     * @param {string} props.message - The message to be displayed in the notification.
+     * @param {Function} props.onClose - The callback function to be called when the close button is clicked.
+     * @returns {JSX.Element} The rendered notification component.
+     */
     const Notification = ({ message, onClose }) => {
         const messageClass = isError ? "bg-red-500" : "bg-green-500";
         return (
@@ -46,24 +54,36 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
         );
     };
 
+    /**
+     * Opens the modal and sets the selected status.
+     * @param {string} status - The status to be selected.
+     */
     const openModal = (status) => {
         setSelectedStatus(status);
         setIsModalVisible(true);
     };
 
+    /**
+     * Closes the modal and resets the selected status.
+     */
     const closeModal = () => {
         setSelectedStatus(null);
         setIsModalVisible(false);
     };
 
+    /**
+     * Handles the approval of a request.
+     * @param {number} id - The ID of the request to be approved.
+     * @returns {Promise<void>} - A Promise that resolves when the approval is complete.
+     */
     const handleApprove = async (id) => {
-        const token = localStorage.getItem('token'); // Get the token from localStorage
+        const token = localStorage.getItem('token'); 
 
         try {
             const response = await fetch(`http://localhost:8080/borrowedstatus/approve/${id}`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}` // Include the token in the headers
+                    'Authorization': `Bearer ${token}` 
                 }
             });
 
@@ -87,6 +107,11 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
         }
     };
 
+    /**
+     * Handles the rejection of a request by sending a delete request to the server.
+     * @param {number} id - The ID of the request to be rejected.
+     * @returns {Promise<void>} - A promise that resolves when the request is successfully rejected.
+     */
     const handleReject = async (id) => {
         if (window.confirm("Weet je zeker dat je dit verzoek wilt verwijderen?")) {
             try {
@@ -113,6 +138,11 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
         }
     };
 
+    /**
+     * Filtered items based on the provided data and filter value.
+     *
+     * @type {Array} An array of filtered items.
+     */
     const filteredItems = useMemo(() => {
         let filteredStatuses = [...data];
         if (hasSearchFilter) {
@@ -131,11 +161,20 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
     const [page, setPage] = useState(1);
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
+    /**
+     * Callback function for handling the change of rows per page.
+     * @param {Event} e - The event object.
+     */
     const onRowsPerPageChange = useCallback((e) => {
         setRowsPerPage(Number(e.target.value));
         setPage(1);
     }, []);
 
+    /**
+     * Memoized array of items to be rendered on the table.
+     *
+     * @type {Array}
+     */
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
@@ -147,6 +186,11 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
         direction: 'ascending'
     });
 
+    /**
+     * Represents an array of items sorted based on the provided sort descriptor.
+     *
+     * @type {Array}
+     */
     const sortedItems = useMemo(() => {
         return [...items].sort((a, b) => {
             const first = a[sortDescriptor.column];
@@ -156,6 +200,11 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
         });
     }, [sortDescriptor, items]);
 
+    /**
+     * Handles the change event of the search input.
+     *
+     * @param {string} value - The new value of the search input.
+     */
     const onSearchChange = useCallback((value) => {
         if (value) {
             setFilterValue(value);
@@ -172,11 +221,19 @@ const BorrowedStatusTableComponent = ({ data = [], loading }) => {
         }
     }, [router.query.search]);
 
+    /**
+     * Clears the filter value and sets the page to 1.
+     */
     const onClear = useCallback(() => {
         setFilterValue('');
         setPage(1);
     }, []);
 
+    /**
+     * The topContent component for the RenderBorrowedStatus table.
+     *
+     * @returns {JSX.Element} The JSX element representing the topContent component.
+     */
     const topContent = useMemo(() => {
         return (
             <div className='flex flex-col gap-4'>
